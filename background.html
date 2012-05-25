@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+var result="";
+function onRequest(request, sender, sendResponse) {
+	if(request.ask=="ed2klinks"){
+		showPopup(request.result,sender.tab.id);		
+	}else if(request.ask=="createCopy"){
+		createCopy(request.result);
+	}
+};
+chrome.extension.onRequest.addListener(onRequest);
+chrome.tabs.onSelectionChanged.addListener(function(id,obj){
+	chrome.tabs.sendRequest(id,{ask:"getResult"},function(response){
+		result = response.result;
+	});
+});
+
+function showPopup(re,id){
+	result = re;	
+	chrome.pageAction.show(id);
+}
+
+function createCopy(re){		
+	chrome.tabs.create({url:"copy.html"},callback);
+	function callback(tab){		
+		chrome.tabs.sendRequest(tab.id,re,function(response){});
+	}
+}
+
+</script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>复制页面</title>
+<script type="text/javascript" src="jquery.js" charset="utf-8"></script>
+<script>
+	function onRequest(request, sender, sendResponse) {
+		var ta = $("#ta");
+		ta.val(request);
+		ta.focus();
+		ta.select();
+	};
+	chrome.extension.onRequest.addListener(onRequest);
+</script>
+</head>
+<body>
+	<textarea id="ta" style="width: 100%;min-height:600px;"></textarea>
+	<input type="button" value="关闭窗口" onclick="window.close();" />
+</body>
+</html>

@@ -10,7 +10,7 @@ var data_map = {
     "cleanSearch":cleanSearch,
     "cleanScope":cleanScope,
     "selectAll":selectAll,
-    "selectOpsite":selectOpsite,
+    "selectOpposite":selectOpposite,
     "cleanSelect":cleanSelect,
     "confirmCopy":confirmCopy
 };
@@ -160,7 +160,7 @@ function selectAll() {
     scanColor();
 }
 
-function selectOpsite() {
+function selectOpposite() {
     $("input[type='checkbox']").each(function(){			
 	if($(this).attr("checked")=="checked") {
 	    $(this).attr("checked",false);

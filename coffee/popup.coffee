@@ -4,25 +4,27 @@ result = []
 table = {}
 trs =""
 selectedIDS = {}
-data_map = {
-  "confirmScope": confirmScope,
-  "cleanSearch":cleanSearch,
-  "cleanScope":cleanScope,
-  "selectAll":selectAll,
-  "selectOpsite":selectOpsite,
-  "cleanSelect":cleanSelect,
-  "confirmCopy":confirmCopy
-}
 
 $(document).ready(()->
-  result = chrome.extension.getBackgroundPAge().result
+  result = chrome.extension.getBackgroundPage().result
   result = dealEd2k(result)
   table = $("#table")
   trs = wrap_tr(result)
   table.append(trs)
 
+  data_map = {
+    "confirmScope": confirmScope,
+    "cleanSearch":cleanSearch,
+    "cleanScope":cleanScope,
+    "selectAll":selectAll,
+    "selectOpposite":selectOpposite,
+    "cleanSelect":cleanSelect,
+    "confirmCopy":confirmCopy
+  }
+
   $("input[data-map]").live("click",()->
     data_map[$(this).attr("data-map")]()
+    return
   )
 
   $("#searchText").live("keyup", ()->
@@ -66,7 +68,7 @@ dealEd2k = (linkarr)->
 
 wrap_tr = (linkobj)->
   trtd = $("<tbody></tobdy>")
-  for key,obj of linobj
+  for key,obj of linkobj
     tr = $("<tr id=\"tr_#{obj.id}\"></tr>")
     tr.append("<td><input type=\"checkbox\" id=\"cb_#{obj.id}\" ed2k=\"#{obj.link}\" /></td>")
     tr.append("<td ee=\"ee\">#{obj.id}</td>")
@@ -89,7 +91,7 @@ dealBig = (num)->
 check_selected = ()->
   $("input[type='checkbox']").each(()->
     if checked($(this))
-      id = $($this).attr("id")
+      id = $(this).attr("id")
       id = id.substring(3, id.length)
       selectedIDS[id]=0
     for key,selected_id of selectedIDS
@@ -114,7 +116,7 @@ confirmScope = ()->
   from = Math.floor($("#from").val())
   to = Math.floor($("#to").val())
   reg = /\d+/
-  if !(reg.text(from) and reg.test(to)) || (from<=0 || to <=0) || (from)>to
+  if !(reg.test(from) and reg.test(to)) || (from<=0 || to <=0) || (from)>to
     alert("范围输入有问题，请输入正确数字")
     return false
   if(to > maxid)
@@ -126,6 +128,50 @@ confirmScope = ()->
   scanColor()
   return true
 
+cleanScope = ()->
+  $("#from").val("")
+  $("#to").val("")
+
+selectAll = ()->
+  $("input[type='checkbox']").each(->
+    $(this).attr('checked',true)
+  )
+  scanColor()
+
+selectOpposite = ()->
+  $("input[type='checkbox']").each(->
+    toggle_check($(this))
+  )
+  scanColor()
+
+cleanSearch = ()->
+  check_selected()
+  $("#searchText").val("")
+  table.find("tbody").remove()
+  table.append(trs)
+  check_selected()
+  scanColor()
+
+cleanSelect = ()->
+  $("input[type='checkbox']").each(->
+    if($(this).attr('checked') == "checked")
+      $(this).attr("checked", false)
+  )
+  scanColor()
+  selectedIDS= {}
+
+confirmCopy = ()->
+  cpresult = ""
+  count = 0
+  $("input[type='checkbox']").each(->
+    if($(this).attr("checked")=="checked")
+      cpresult += "#{$(this).attr("ed2k")}\n"
+      count++
+  )
+  if count==0
+    alert("你还没有选择！")
+    return false
+  chrome.extension.sendRequest({ask:"createCopy", result:cpresult},(response)->)
 
 checked = (element)->
   element.attr("checked")=="checked"

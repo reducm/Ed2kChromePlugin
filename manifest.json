@@ -1,39 +1,41 @@
 {
-	"name":"Ed2k助手",
-	"version":"1.0",
-	"icons":{
-		"19":"icon19.png",
-		"48":"icon48.png",		
-		"128":"icon128.png"		
-	},
-	"background_page" : "background.html",	
-	"description":"这是一个方便复制处理页面内大量的ed2k链接的应用,带有范围选择与文件名搜索选择的功能",
-	
-	"permissions": [ 
-		"http://*/*",
-		"https://*/*",
-		"file:///*/*",
-		"tabs",    
-		"bookmarks",
-		"unlimitedStorage" 
+    "name":"Ed2k链接复制助手",
+    "version":"1.5",
+    "manifest_version": 2,
+    "icons":{
+	"19":"icon19.png",
+	"16":"icon16.png",
+	"48":"icon48.png",		
+	"128":"icon128.png"		
+    },
+    "background": {
+	"scripts":["background.js"]
+    },	
+    "description":"这是一个方便复制处理页面内大量的ed2k链接的应用,带有范围选择与文件名搜索选择的功能",
+
+    "permissions": [ 
+	"http://*/*",
+	"https://*/*",
+	"file:///*/*",
+	"tabs",    
+	"unlimitedStorage",
+	"clipboardRead",
+	"clipboardWrite",
+	"notifications"
 	],
-	 
-	"page_action":{
-		"default_icon": "icon19.png",
-		"default_title": "Ed2k助手",
-		"default_popup": "popup.html"
-	},
-				  
-	 "content_scripts":[
-    {
-      "matches" : [
-      	"file:///*/*",
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js" : ["contentscript.js"],
-      "run_at" : "document_end",
-      "all_frames" : false
-    }
-  ]
+
+    "page_action":{
+	"default_icon": "icon19.png",
+	"default_title": "Ed2k链接复制助手",
+	"default_popup": "popup.html"
+    },
+    "homepage_url":"https://github.com/reducm/Ed2kChromePlugin",
+    "content_scripts":[
+	{
+	    "matches" : [ "file:///*/*", "http://*/*", "https://*/*" ],
+	    "js" : ["contentscript.js"],
+	    "run_at" : "document_end",
+	    "all_frames" : false
+	}
+    ]
 }

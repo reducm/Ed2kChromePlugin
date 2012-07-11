@@ -1,43 +1,44 @@
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Hi there</title>
-<script type="text/javascript" src="jquery.js" charset="utf-8"></script>
-<script type="text/javascript" src="popup.js" charset="utf-8"></script>
-<style>
-* {font-size: 13px;}
-#content {width:600px;margin:0 auto;padding:0px 20px 0px 20px;}
-#dt { overflow-y:scroll;max-height:400px;}
-#table{
-	border:1px solid orange;border-collapse: collapse;border-spacing: 0px;
-	display:inline;	
-}
-#table  td{border:1px solid orange;}
-.orange {border:1px solid orange;}
-.orange div {border:1px solid orange;}
-input[type="text"] {width:30px;}
-</style>    
-</head>
-<body>
+    <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Hi there</title>
+	<script type="text/javascript" src="jquery.js" charset="utf-8"></script>
+	<script type="text/javascript" src="popup.js" charset="utf-8"></script>
+	<script type="text/javascript" src="jclipboard.js" charset="utf-8"></script>
+	<style>
+	    * {font-size: 13px;}
+	    #content {width:600px;margin:0 auto;padding:0px 20px 0px 20px;}
+	    #dt { overflow-y:scroll;max-height:400px;}
+	    #table{
+		border:1px solid orange;border-collapse: collapse;border-spacing: 0px;
+		display:inline;	
+	    }
+	    #table  td{border:1px solid orange;}
+	    .orange {border:1px solid orange;}
+	    .orange div {border:1px solid orange;}
+	    input[type="text"] {width:30px;}
+	</style>    
+    </head>
+    <body>
 	<div id="content">
-	<div id="div" class="orange">	
+	    <div id="div" class="orange">	
 		<div>选择范围：<input type="text" id="from" />-<input type="text" id="to" />
-		<input type="button" value="确定范围" onclick="confirmScope()"/><input type="button" value="清除范围参数" onclick="cleanScope()"/>(确定后范围内的项目将会被选中)</div>	
-		<div>搜索文件名:<input tupe="text" id="searchText" /><input type="button" value="返回" onclick="cleanSearch()" />(你在搜索时选择的选项再返回后依然存在)</div>
+		    <input type="button" value="确定范围" data-map="confirmScope"/><input type="button" value="清除范围参数" data-map="cleanScope"/>(确定后范围内的项目将会被选中)</div>	
+		<div>搜索文件名:<input tupe="text" id="searchText" /><input type="button" value="返回" data-map="cleanSearch" />(你在搜索时选择的选项再返回后依然存在)</div>
+	    </div>
+
+	    <div id="dt">
+		<table id="table">
+		    <tr><td>选择</td><td>编号</td><td>文件名</td><td>容量</td></tr>
+		</table>	
+	    </div>
+
+	    <div class="orange"><input type="button" id="selectAll" value="全选" data-map="selectAll"/><input type="button" id="selectOpsite" value="反选" data-map="selectOpsite"/>
+		<input type="button" id="selectOpsite" value="清除" data-map="cleanSelect"/>
+		<input type="button" id="confirmCopy" value="确定复制" data-map="confirmCopy"/>
+	    </div>
+
 	</div>
-	
-	<div id="dt">
-	<table id="table">
-		<tr><td>选择</td><td>编号</td><td>文件名</td><td>容量</td></tr>
-	</table>	
-	</div>
-	
-		<div class="orange"><input type="button" id="selectAll" value="全选" onclick="selectAll()"/><input type="button" id="selectOpsite" value="反选" onclick="selectOpsite()"/>
-			<input type="button" id="selectOpsite" value="清除" onclick="cleanSelect()"/>
-			<input type="button" id="confirmCopy" value="确定复制" onclick="confirmCopy()"/>
-		</div>
-		
-	</div>
-	
-</body>
+
+    </body>
 </html>

@@ -1,5 +1,16 @@
 {
-   'name':{
-	'message':'fuck'
-    }
+  "extension_name":{
+    "message":"Ed2k链接复制助手",
+    "description":"插件名称"
+  },
+  "extension_description":{
+    "message":"这是一个方便复制处理页面内大量的ed2k链接的应用,带有范围选择与文件名搜索选择的功能",
+    "description":"插件描述"
+  },
+  "error_scope":{
+    "message":"范围输入有问题，请输入正确数字",
+  },
+  "error_overlimit":{
+    "message":"最大范围超出有效选项数，请输入正确数字",
+  },
 }

@@ -165,11 +165,11 @@
     to = Math.floor($("#to").val());
     reg = /\d+/;
     if (!(reg.test(from) && reg.test(to)) || (from <= 0 || to <= 0) || from > to) {
-      alert("范围输入有问题，请输入正确数字");
+      alert(chrome.i18n.getMessage("error_scope"));
       return false;
     }
     if (to > maxid) {
-      alert("最大范围超出有效选项数，请输入正确数字");
+      alert(chrome.i18n.getMessage("error_overlimi"));
       return false;
     }
     for (i = _i = from; from <= to ? _i <= to : _i >= to; i = from <= to ? ++_i : --_i) {

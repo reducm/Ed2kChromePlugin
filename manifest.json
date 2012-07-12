@@ -1,5 +1,5 @@
 {
-    "name":"Ed2k链接复制助手",
+    "name":"__MSG_extension_name__",
     "version":"1.5",
     "manifest_version": 2,
     "default_locale": "zh_CN",
@@ -12,7 +12,7 @@
     "background": {
 	"scripts":["background.js"]
     },	
-    "description":"这是一个方便复制处理页面内大量的ed2k链接的应用,带有范围选择与文件名搜索选择的功能",
+    "description":"__MSG_extension_description__",
 
     "permissions": [ 
 	"http://*/*",
@@ -27,7 +27,7 @@
 
     "page_action":{
 	"default_icon": "icon19.png",
-	"default_title": "Ed2k链接复制助手",
+	"default_title": "__MSG_extension_name__",
 	"default_popup": "popup.html"
     },
     "homepage_url":"https://github.com/reducm/Ed2kChromePlugin",

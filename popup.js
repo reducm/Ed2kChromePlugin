@@ -21,6 +21,12 @@
     table = $("#table");
     trs = wrap_tr(result);
     table.append(trs);
+    $("span[i18n]").each(function() {
+      return $(this).html(chrome.i18n.getMessage($(this).attr('i18n')));
+    });
+    $("input[i18n]").each(function() {
+      return $(this).val(chrome.i18n.getMessage($(this).attr('i18n')));
+    });
     data_map = {
       "confirmScope": confirmScope,
       "cleanSearch": cleanSearch,
@@ -45,7 +51,7 @@
         }
       }
       temptrtd = wrap_tr(templinkobj);
-      table.remove(table.find("tbody"));
+      table.find("tbody").remove();
       table.append(temptrtd);
       return check_selected();
     });
@@ -123,7 +129,7 @@
     return $("input[type='checkbox']").each(function() {
       var id, key, selected_id, temp, _results;
       if (checked($(this))) {
-        id = $($this).attr("id");
+        id = $(this).attr("id");
         id = id.substring(3, id.length);
         selectedIDS[id] = 0;
       }
@@ -165,11 +171,11 @@
     to = Math.floor($("#to").val());
     reg = /\d+/;
     if (!(reg.test(from) && reg.test(to)) || (from <= 0 || to <= 0) || from > to) {
-      alert(chrome.i18n.getMessage("error_scope"));
+      alert("范围输入有问题，请输入正确数字");
       return false;
     }
     if (to > maxid) {
-      alert(chrome.i18n.getMessage("error_overlimi"));
+      alert("最大范围超出有效选项数，请输入正确数字");
       return false;
     }
     for (i = _i = from; from <= to ? _i <= to : _i >= to; i = from <= to ? ++_i : --_i) {
@@ -229,7 +235,7 @@
       }
     });
     if (count === 0) {
-      alert("你还没有选择！");
+      alert(chrome.i18n.getMessage("eroor_unselected"));
       return false;
     }
     return chrome.extension.sendRequest({

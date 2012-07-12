@@ -23,22 +23,22 @@
     <body>
 	<div id="content">
 	    <div id="div" class="orange">	
-		<div>选择范围：<input type="text" id="from" />-<input type="text" id="to" />
-		    <input type="button" value="确定范围" data-map="confirmScope"/><input type="button" value="清除范围参数" data-map="cleanScope"/>(确定后范围内的项目将会被选中)</div>	
-		<div>搜索文件名:<input tupe="text" id="searchText" /><input type="button" value="返回" data-map="cleanSearch" />(你在搜索时选择的选项再返回后依然存在)</div>
+		<div><span i18n="select_scope">选择范围</span>：<input type="text" id="from" />-<input type="text" id="to" />
+		    <input type="button" value="确定范围" i18n='confirm_scope' data-map="confirmScope"/><input type="button" value="清除范围参数" i18n='clean_scope' data-map="cleanScope"/><span i18n="scop_tips">(确定后范围内的项目将会被选中)</span></div>	
+		<div><span i18n='search_filename'>搜索文件名</span>:<input tupe="text" id="searchText" /><input type="button" value="返回" i18n="button_return" data-map="cleanSearch" /><span i18n="search_tips">(你在搜索时选择的选项再返回后依然存在)</span></div>
 	    </div>
 
 	    <div id="dt">
 		<table id="table">
 		    <thead>
-		      <tr><th>选择</th><th>编号</th><th>文件名</th><th>容量</th></tr>
+			<tr><th><span i18n="th_select">选择</span></th><th><span i18n="th_number">编号</span></th><th><span i18n="th_filename">文件名</span></th><th><span i18n="th_size">大小</span></th></tr>
 		    </thead>
 		</table>	
 	    </div>
 
-	    <div class="orange"><input type="button" id="selectAll" value="全选" data-map="selectAll"/><input type="button" id="selectOpposite" value="反选" data-map="selectOpposite"/>
-		<input type="button" id="selectOpsite" value="清除" data-map="cleanSelect"/>
-		<input type="button" id="confirmCopy" value="确定复制" data-map="confirmCopy"/>
+	    <div class="orange"><input type="button" id="selectAll" i18n="button_selectall" value="全选" data-map="selectAll"/><input type="button" id="selectOpposite" i18n="button_selectopposite" value="反选" data-map="selectOpposite"/>
+		<input type="button" id="selectOpsite" value="清除" i18n="button_cleanselect" data-map="cleanSelect"/>
+		<input type="button" id="confirmCopy" value="确定复制" i18n="button_confirmcopy" data-map="confirmCopy"/>
 	    </div>
 
 	</div>

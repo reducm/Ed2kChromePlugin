@@ -11,6 +11,13 @@ $(document).ready(()->
   table = $("#table")
   trs = wrap_tr(result)
   table.append(trs)
+  $("span[i18n]").each(()->
+    $(this).html(chrome.i18n.getMessage($(this).attr('i18n')))
+  )
+
+  $("input[i18n]").each(()->
+    $(this).val( chrome.i18n.getMessage( $(this).attr('i18n') ) )
+  )
 
   data_map = {
     "confirmScope": confirmScope,
@@ -34,7 +41,7 @@ $(document).ready(()->
     for key,r of result
       templinkobj[key] = r if key.toLocaleLowerCase().indexOf(st.toLocaleLowerCase())>-1
     temptrtd = wrap_tr(templinkobj)
-    table.remove(table.find("tbody"))
+    table.find("tbody").remove()
     table.append(temptrtd)
     check_selected()
   )
@@ -169,7 +176,7 @@ confirmCopy = ()->
       count++
   )
   if count==0
-    alert("你还没有选择！")
+    alert(chrome.i18n.getMessage("eroor_unselected"))
     return false
   chrome.extension.sendRequest({ask:"createCopy", result:cpresult},(response)->)
 

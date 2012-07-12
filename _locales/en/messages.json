@@ -1,0 +1,65 @@
+{
+  "extension_name":{
+    "message":"Ed2kHelper",
+    "description":"Extension Name"
+  },
+  "extension_description":{
+    "message":"An extension that helps you to deal with ed2k/eMule/eDonkey links in bulk, with functions of select range and filename search.",
+    "description":"Extension Description"
+  },
+  "error_scope":{
+    "message":"Select range error. Please enter a correct number."
+  },
+  "error_overlimit":{
+    "message":"Value exceeds valid range. Please enter a correct number."
+  },
+  "error_unselcted":{
+    "message":"You haven't selected!"
+  },
+  "select_scope":{
+    "message":"Select Range"
+  },
+  "confirm_scope":{
+    "message":"Confirm"
+  },
+  "clean_scope":{
+    "message":"Clear"
+  },
+  "scope_tips":{
+    "message":"(Items will be selected after you confirm.)"
+  },
+  "search_filename":{
+    "message":"Filename search"
+  },
+  "button_return":{
+    "message":"Return"
+  },
+  "search_tips":{
+    "message":"(Selected items won't be cleared after return.)"
+  },
+  "th_select":{
+    "message":"Select"
+  },
+  "th_number":{
+    "message":"#"
+  },
+  "th_filename":{
+    "message":"Filename"
+  },
+  "th_size":{
+    "message":"Size"
+  },
+  "button_selectall":{
+    "message":"Select All"
+  },
+  "button_selectopposite":{
+    "message":"Inverse"
+  },
+  "button_cleanselect":{
+    "message":"Deselect All"
+  },
+  "button_confirmcopy":{
+    "message":"Copy Links"
+  }
+}
+

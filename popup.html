@@ -2,30 +2,27 @@
     <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Hi there</title>
+	<link rel="stylesheet" href="bootstrap.min.css" type="text/css"  charset="utf-8">
 	<script type="text/javascript" src="jquery.js" charset="utf-8"></script>
 	<script type="text/javascript" src="popup.js" charset="utf-8"></script>
 	<script type="text/javascript" src="jclipboard.js" charset="utf-8"></script>
 	<style>
 	    * {font-size: 13px;}
 	    #content {width:600px;margin:0 auto;padding:0px 20px 0px 20px;}
-	    #dt { overflow-y:scroll;max-height:400px;}
-	    #table{
-		border:1px solid orange;border-collapse: collapse;border-spacing: 0px;
-		display:inline;	
-	    }
-	    #table  td{border:1px solid orange;}
-	    .orange {border:1px solid orange;}
-	    .orange div {border:1px solid orange;}
-	    input[type="text"] {width:30px;}
+	    #dt { overflow-y:scroll;max-height:600px;}
+	    #table th{min-width:26px;border-right: 1px solid rgba(9, 6, 6, 0.27);}
+
+	    input[type="text"] {width:40px;height:24px;margin:0;padding:0;}
+	    #searchText {width:132px;}
 	    .selected_tr{background:#e3eaf2;}
 	</style>    
     </head>
     <body>
 	<div id="content">
-	    <div id="div" class="orange">	
+	    <div id="div">	
 		<div><span i18n="select_scope">选择范围</span>：<input type="text" id="from" />-<input type="text" id="to" />
-		    <input type="button" value="确定范围" i18n='confirm_scope' data-map="confirmScope"/><input type="button" value="清除范围参数" i18n='clean_scope' data-map="cleanScope"/><span i18n="scop_tips">(确定后范围内的项目将会被选中)</span></div>	
-		<div><span i18n='search_filename'>搜索文件名</span>:<input tupe="text" id="searchText" /><input type="button" value="返回" i18n="button_return" data-map="cleanSearch" /><span i18n="search_tips">(你在搜索时选择的选项再返回后依然存在)</span></div>
+		    <input type="button" class="btn btn-primary" value="确定范围" i18n='confirm_scope' data-map="confirmScope"/><input type="button" class="btn btn-primary" value="清除范围参数" i18n='clean_scope' data-map="cleanScope"/><span i18n="scop_tips">(确定后范围内的项目将会被选中)</span></div>	
+		<div><span i18n='search_filename'>搜索文件名</span>:<input type="text" id="searchText" /><input type="button" value="返回" i18n="button_return" class="btn btn-primary" data-map="cleanSearch" /></div>
 	    </div>
 
 	    <div id="dt">
@@ -36,9 +33,9 @@
 		</table>	
 	    </div>
 
-	    <div class="orange"><input type="button" id="selectAll" i18n="button_selectall" value="全选" data-map="selectAll"/><input type="button" id="selectOpposite" i18n="button_selectopposite" value="反选" data-map="selectOpposite"/>
-		<input type="button" id="selectOpsite" value="清除" i18n="button_cleanselect" data-map="cleanSelect"/>
-		<input type="button" id="confirmCopy" value="确定复制" i18n="button_confirmcopy" data-map="confirmCopy"/>
+	    <div class="orange"><input type="button" id="selectAll" class="btn btn-primary" i18n="button_selectall" value="全选" data-map="selectAll"/><input type="button" id="selectOpposite" i18n="button_selectopposite" value="反选" class="btn btn-primary" data-map="selectOpposite"/>
+		<input type="button" id="selectOpsite" value="清除" i18n="button_cleanselect" class="btn btn-primary" data-map="cleanSelect"/>
+		<input type="button" id="confirmCopy" value="复制" i18n="button_confirmcopy" class="btn btn-success" data-map="confirmCopy"/>
 	    </div>
 
 	</div>

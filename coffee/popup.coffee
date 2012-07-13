@@ -176,7 +176,7 @@ confirmCopy = ()->
       count++
   )
   if count==0
-    alert(chrome.i18n.getMessage("eroor_unselected"))
+    alert(chrome.i18n.getMessage("error_unselected"))
     return false
   chrome.extension.sendRequest({ask:"createCopy", result:cpresult},(response)->)
 

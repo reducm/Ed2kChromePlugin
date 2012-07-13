@@ -235,7 +235,7 @@
       }
     });
     if (count === 0) {
-      alert(chrome.i18n.getMessage("eroor_unselected"));
+      alert(chrome.i18n.getMessage("error_unselected"));
       return false;
     }
     return chrome.extension.sendRequest({

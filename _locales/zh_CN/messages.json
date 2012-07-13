@@ -20,10 +20,10 @@
     "message":"选择范围"
   },
   "confirm_scope":{
-    "message":"确定范围"
+    "message":"确定"
   },
   "clean_scope":{
-    "message":"清除范围参数"
+    "message":"清除"
   },
   "scope_tips":{
     "message":"(确定后范围内的项目将会被选中)"
@@ -59,7 +59,7 @@
     "message":"清除"
   },
   "button_confirmcopy":{
-    "message":"确定复制"
+    "message":"复制"
   }
 }
 

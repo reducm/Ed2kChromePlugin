@@ -178,7 +178,13 @@ confirmCopy = ()->
   if count==0
     alert(chrome.i18n.getMessage("error_unselected"))
     return false
-  chrome.extension.sendRequest({ask:"createCopy", result:cpresult},(response)->)
+  JClipboard.copy(cpresult)
+  textarea = $("<textarea></textarea>")
+  textarea.val(cpresult)
+  $("#copy").empty().append("<span i18n=\"copy_success\">#{chrome.i18n.getMessage("copy_success")}</span>").append(textarea)
+  $("a[href='#copy']").tab("show")
+  $("#copy textarea").height($("#links").height()).focus().select()
+  return true
 
 checked = (element)->
   element.attr("checked")=="checked"

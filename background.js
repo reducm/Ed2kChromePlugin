@@ -4,8 +4,6 @@ var showPopup, createCopy;
 function onRequest(request, sender, sendResponse) {
     if(request.ask=="ed2klinks"){
 	showPopup(request.result,sender.tab.id);		
-    }else if(request.ask=="createCopy"){
-	createCopy(request.result);
     }
 };
 

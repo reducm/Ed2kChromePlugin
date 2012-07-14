@@ -225,7 +225,7 @@
   };
 
   confirmCopy = function() {
-    var count, cpresult;
+    var count, cpresult, textarea;
     cpresult = "";
     count = 0;
     $("input[type='checkbox']").each(function() {
@@ -238,10 +238,13 @@
       alert(chrome.i18n.getMessage("error_unselected"));
       return false;
     }
-    return chrome.extension.sendRequest({
-      ask: "createCopy",
-      result: cpresult
-    }, function(response) {});
+    JClipboard.copy(cpresult);
+    textarea = $("<textarea></textarea>");
+    textarea.val(cpresult);
+    $("#copy").empty().append("<span i18n=\"copy_success\">" + (chrome.i18n.getMessage("copy_success")) + "</span>").append(textarea);
+    $("a[href='#copy']").tab("show");
+    $("#copy textarea").height($("#links").height()).focus().select();
+    return true;
   };
 
   checked = function(element) {

@@ -13,7 +13,7 @@
   "error_overlimit":{
     "message":"Value exceeds valid range. Please enter a correct number."
   },
-  "error_unselcted":{
+  "error_unselected":{
     "message":"You haven't selected!"
   },
   "select_scope":{
@@ -60,6 +60,15 @@
   },
   "button_confirmcopy":{
     "message":"Copy"
+  },
+  "result_links":{
+    "message":"Links"
+  },
+  "result_copy":{
+    "message":"Copy"
+  },
+  "copy_success":{
+    "message":"内容已经成功复制到粘贴板！以下是复制结果"
   }
 }
 

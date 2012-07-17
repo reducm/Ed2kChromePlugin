@@ -54,7 +54,7 @@
       table.find("tbody").remove();
       table.append(temptrtd);
       return check_selected();
-    });
+    }).attr("placeholder", chrome.i18n.getMessage("search_placeholder"));
     return table.delegate("td[ee]", "click", function() {
       dealChecked($(this));
       return scanColor();
@@ -241,7 +241,7 @@
     JClipboard.copy(cpresult);
     textarea = $("<textarea></textarea>");
     textarea.val(cpresult);
-    $("#copy").empty().append("<span i18n=\"copy_success\">" + (chrome.i18n.getMessage("copy_success")) + "</span>").append(textarea);
+    $("#copy").empty().append("<span style='color:#08c;' i18n=\"copy_success\">" + (chrome.i18n.getMessage("copy_success")) + "</span>").append(textarea);
     $("a[href='#copy']").tab("show");
     $("#copy textarea").height($("#links").height()).focus().select();
     return true;

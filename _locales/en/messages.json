@@ -17,7 +17,7 @@
     "message":"You haven't selected!"
   },
   "select_scope":{
-    "message":"Select Range"
+    "message":"Range"
   },
   "confirm_scope":{
     "message":"Confirm"
@@ -29,7 +29,10 @@
     "message":"(Items will be selected after you confirm.)"
   },
   "search_filename":{
-    "message":"Filename search"
+    "message":"Search"
+  },
+  "search_placeholder":{
+    "message":"Filename"
   },
   "button_return":{
     "message":"Return"
@@ -68,7 +71,7 @@
     "message":"Copy"
   },
   "copy_success":{
-    "message":"内容已经成功复制到粘贴板！以下是复制结果"
+    "message":"The content has been successfully copied to the clipboard! The following is a copy results"
   }
 }
 

@@ -44,7 +44,7 @@ $(document).ready(()->
     table.find("tbody").remove()
     table.append(temptrtd)
     check_selected()
-  )
+  ).attr("placeholder",chrome.i18n.getMessage("search_placeholder"))
   
   table.delegate("td[ee]","click",()->
     dealChecked($(this))
@@ -181,7 +181,7 @@ confirmCopy = ()->
   JClipboard.copy(cpresult)
   textarea = $("<textarea></textarea>")
   textarea.val(cpresult)
-  $("#copy").empty().append("<span i18n=\"copy_success\">#{chrome.i18n.getMessage("copy_success")}</span>").append(textarea)
+  $("#copy").empty().append("<span style='color:#08c;' i18n=\"copy_success\">#{chrome.i18n.getMessage("copy_success")}</span>").append(textarea)
   $("a[href='#copy']").tab("show")
   $("#copy textarea").height($("#links").height()).focus().select()
   return true

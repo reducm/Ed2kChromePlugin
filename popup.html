@@ -1,74 +1,89 @@
 <html>
-    <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Hi there</title>
-	<link rel="stylesheet" href="bootstrap.min.css" type="text/css"  charset="utf-8">
-	<script type="text/javascript" src="jquery.js" charset="utf-8"></script>
-	<script type="text/javascript" src="jclipboard.js" charset="utf-8"></script>
-	<script type="text/javascript" src="bootstrap.min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="popup.js" charset="utf-8"></script>
-	<style>
-	    * {font-size: 13px;}
-	    #content {width:600px;margin:0 auto;padding:0px 20px 0px 20px;}
-	    #dt { overflow-y:auto;max-height:600px;clear:both;}
-	    #db {margin-top: 10px;}
-	    #links {max-height:400px;overflow-y:auto;}
-	    #table th{min-width:26px;border-right: 1px solid rgba(9, 6, 6, 0.27);}
-	    #table {width:100%;}
-	    input[type="text"] {width:40px;height:24px;margin:0;padding:0;}
-	    #searchText {width:132px;}
-	    .selected_tr{background:#e3eaf2;}
-	    #switch_ul{ margin-bottom:10px; }
-	    textarea {width:100%; min-height:100px;}
-	</style>    
-    </head>
-    <body>
-	<div id="content">
-	    <div id="div">	
-		<div class="pull-left">
-		    <span i18n="select_scope">选择范围</span>：
-		    <input type="text" id="from" />-<input type="text" id="to" />
-		    <input type="button" class="btn btn-primary" value="确定范围" i18n='confirm_scope' data-map="confirmScope"/>
-		    <input type="button" class="btn btn-primary" value="清除范围参数" i18n='clean_scope' data-map="cleanScope"/><span i18n="scop_tips"></span>
-		</div>	
-		<div class="pull-right" >
-		    <span i18n='search_filename'>搜索文件名</span>:<input type="text" id="searchText" />
-		    <input type="button" value="返回" i18n="button_return" class="btn btn-primary" data-map="cleanSearch" />
-		</div>
-	    </div>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Hi there</title>
+  <link rel="stylesheet" href="bootstrap.min.css" type="text/css"  charset="utf-8">
+  <script type="text/javascript" src="jquery.js" charset="utf-8"></script>
+  <script type="text/javascript" src="jclipboard.js" charset="utf-8"></script>
+  <script type="text/javascript" src="bootstrap.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="popup.js" charset="utf-8"></script>
+  <style>
+    * {font-size: 13px;}
+    #content {width:600px;margin:0 auto;padding:0px 20px 0px 20px;}
+    #dt { overflow-y:auto;max-height:600px;clear:both;}
+    #db {margin-top: 10px;}
+    #links {max-height:400px;overflow-y:auto;}
+    .result_table th{min-width:26px;}
+    .result_table {width:100%;}
+    table tr td:nth-child(3){word-break: break-all;}
+    input[type="text"] {width:40px;height:24px;margin:0;padding:0;}
+    #searchText {width:132px;}
+    .selected_tr{background:#e3eaf2;}
+    #switch_ul{ margin-bottom:10px; }
+    textarea {width:100%; min-height:100px;}
+  </style>    
+</head>
+<body>
+  <div id="content">
+    <div id="div">	
+      <div class="pull-left">
+        <span i18n="select_scope">选择范围</span>：
+        <input type="text" id="from" />-<input type="text" id="to" />
+        <input type="button" class="btn btn-primary" value="确定范围" i18n='confirm_scope' data-map="confirmScope"/>
+        <input type="button" class="btn btn-primary" value="清除范围参数" i18n='clean_scope' data-map="cleanScope"/><span i18n="scop_tips"></span>
+      </div>	
+      <div class="pull-right" >
+        <span i18n='search_filename'>搜索文件名</span>:<input type="text" id="searchText" />
+        <input type="button" value="返回" i18n="button_return" class="btn btn-primary" data-map="cleanSearch" />
+      </div>
+    </div>
 
-	    <div id="dt">
-		<ul class="nav nav-tabs" id="switch_ul">
-		    <li class="active"><a href="#links" data-toggle="tab"><span i18n="result_links">链接结果</span></a></li>
-		    <li><a href="#copy" data-toggle="tab"><span i18n="result_copy">复制结果</span></a></li>
-		</ul>
+    <div id="dt">
+      <ul class="nav nav-tabs" id="switch_ul">
+        <li class="active"><a href="#ed2k_links" data-toggle="tab" data-type="ed2k"><span i18n="result_ed2k_links">ed2k结果</span></a></li>
+        <li><a href="#magnet_links" data-toggle="tab" data-type="magnet"><span i18n="result_magnet_links">magnet结果</span></a></li>
+        <li><a href="#copy" data-toggle="tab"><span i18n="result_copy">复制结果</span></a></li>
+      </ul>
 
-		<div class="tab-content">
-		    <div class="tab-pane active" id="links">
-			<table id="table">
-			    <thead>
-				<tr>
-				    <th><span i18n="th_select">选择</span></th>
-				    <th><span i18n="th_number">编号</span></th>
-				    <th><span i18n="th_filename">文件名</span></th>
-				    <th><span i18n="th_size">大小</span></th></tr>
-			    </thead>
-			</table>	
-		    </div>
-		    <div class="tab-pane" id="copy">
+      <div class="tab-content">
+        <div class="tab-pane active" id="ed2k_links">
+          <table class="result_table table table-striped" id="ed2k_table" data-type="ed2k">
+            <thead>
+              <tr>
+                <th><span i18n="th_select">选择</span></th>
+                <th><span i18n="th_number">编号</span></th>
+                <th><span i18n="th_filename">文件名</span></th>
+                <th><span i18n="th_size">大小</span></th></tr>
+            </thead>
+          </table>	
+        </div>
 
-		    </div>
-		</div>
-	    </div>
+        <div class="tab-pane" id="magnet_links">
+          <table class="result_table table table-striped" id="magnet_table" data-type="magnet">
+            <thead>
+              <tr>
+                <th><span i18n="th_select">选择</span></th>
+                <th><span i18n="th_number">编号</span></th>
+                <th><span i18n="th_filename">文件名</span></th>
+                <th><span i18n="th_size">大小</span></th></tr>
+            </thead>
+          </table>	
+        </div>
 
-	    <div id="db">
-		<input type="button" id="selectAll" class="btn btn-primary" i18n="button_selectall" value="全选" data-map="selectAll"/>
-		<input type="button" id="selectOpposite" i18n="button_selectopposite" value="反选" class="btn btn-primary" data-map="selectOpposite"/>
-		<input type="button" id="selectOpsite" value="清除" i18n="button_cleanselect" class="btn btn-primary" data-map="cleanSelect"/>
-		<input type="button" id="confirmCopy" value="复制" i18n="button_confirmcopy" class="btn btn-success" data-map="confirmCopy"/>
-	    </div>
+        <div class="tab-pane" id="copy">
 
-	</div>
+        </div>
+      </div>
+    </div>
 
-    </body>
+    <div id="db">
+      <input type="button" id="selectAll" class="btn btn-primary" i18n="button_selectall" value="全选" data-map="selectAll"/>
+      <input type="button" id="selectOpposite" i18n="button_selectopposite" value="反选" class="btn btn-primary" data-map="selectOpposite"/>
+      <input type="button" id="selectOpsite" value="清除" i18n="button_cleanselect" class="btn btn-primary" data-map="cleanSelect"/>
+      <input type="button" id="confirmCopy" value="复制" i18n="button_confirmcopy" class="btn btn-success" data-map="confirmCopy"/>
+    </div>
+
+  </div>
+
+</body>
 </html>

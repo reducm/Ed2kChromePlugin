@@ -1,10 +1,10 @@
 {
   "extension_name":{
-    "message":"Ed2kHelper",
+    "message":"Ed2k&MagnetHelper",
     "description":"Extension Name"
   },
   "extension_description":{
-    "message":"An extension that helps you to deal with ed2k/eMule/eDonkey links in bulk, with functions of select range and filename search.",
+    "message":"An extension that helps you to deal with ed2k/eMule/eDonkey/magnet links in bulk, with functions of select range and filename search.",
     "description":"Extension Description"
   },
   "error_scope":{
@@ -63,6 +63,12 @@
   },
   "button_confirmcopy":{
     "message":"Copy"
+  },
+  "result_ed2k_links":{
+    "message":"ed2k~"
+  },
+  "result_magnet_links":{
+    "message":"magnet~"
   },
   "result_links":{
     "message":"Links"

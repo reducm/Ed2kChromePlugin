@@ -1,10 +1,10 @@
 {
   "extension_name":{
-    "message":"Ed2k链接复制助手",
+    "message":"Ed2k&Magnet链接复制助手",
     "description":"插件名称"
   },
   "extension_description":{
-    "message":"这是一个方便复制处理页面内大量的ed2k链接的应用,带有范围选择与文件名搜索选择的功能",
+    "message":"这是一个方便复制处理页面内大量的ed2k和magnet链接的应用,带有范围选择与文件名搜索选择的功能",
     "description":"插件描述"
   },
   "error_scope":{
@@ -64,8 +64,11 @@
   "button_confirmcopy":{
     "message":"复制"
   },
-  "result_links":{
-    "message":"链接结果"
+  "result_ed2k_links":{
+    "message":"ed2k结果"
+  },
+  "result_magnet_links":{
+    "message":"magnet结果"
   },
   "result_copy":{
     "message":"复制结果"

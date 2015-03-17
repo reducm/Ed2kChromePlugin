@@ -1,17 +1,23 @@
 # TODO: fix bug "&" symbol show %26
 contabid=0
-maxid=0
+types = ["ed2k", "magnet"]
 result = []
-table = {}
-trs =""
 selectedIDS = {}
+magnet_regex = /magnet\:\?[^\"]+/ig
+window.ed2k_bitch = {}
+window.magnet_bitch = {}
 
 $(document).ready(()->
   result = chrome.extension.getBackgroundPage().result
-  result = dealEd2k(result)
-  table = $("#table")
-  trs = wrap_tr(result)
-  table.append(trs)
+  console.log "result:", result
+  window.ed2k_bitch = @ed2k_result = dealEd2k(result.ed2k_result)
+  window.magnet_bitch = @magnet_result = dealMagnet(result.magnet_result)
+  console.log @ed2k_result, @magnet_result
+  that = @
+    
+  for prefix in types
+    table_append_tr($("##{prefix}_table"), @["#{prefix}_result"])
+  
   $("span[i18n]").each(()->
     $(this).html(chrome.i18n.getMessage($(this).attr('i18n')))
   )
@@ -36,6 +42,9 @@ $(document).ready(()->
   )
 
   $("#searchText").live("keyup", ()->
+    table = current_table()
+    type = table.data("type")
+    result = that["#{type}_result"]
     check_selected()
     st = $(this).val()
     templinkobj = {}
@@ -47,7 +56,7 @@ $(document).ready(()->
     check_selected()
   ).attr("placeholder",chrome.i18n.getMessage("search_placeholder"))
   
-  table.delegate("td[ee]","click",()->
+  $("table").delegate("td[ee]","click",()->
     dealChecked($(this))
     scanColor()
   ).delegate("tr", "mouseenter",()->
@@ -58,9 +67,16 @@ $(document).ready(()->
     unless checked(cb)
       $(this).removeClass("selected_tr")
   )
+
+  console.log "resulted2kl:", result.ed2k_result.length
+  console.log "resultedmgl:", result.magnet_result.length
+  if result.ed2k_result.length == 0 and result.magnet_result.length > 0
+    console.log "should click!"
+    $("#switch_ul a[href='#magnet_links']").click()
+
 )
 
-dealEd2k = (linkarr)->
+dealEd2k = (linkarr = [])->
   re = {}
   count = 0
   for link in linkarr
@@ -71,8 +87,38 @@ dealEd2k = (linkarr)->
     continue if re[name]?
     count++
     re[name] = id:count, link:tmp[0], big:(tmp[2]/(1024*1024))
-  maxid = count
+  $("#ed2k_table").data("maxid", count)
   re
+
+dealMagnet = (linkarr = [])->
+  re = {}
+  count = 0
+  for link in linkarr
+    name_regex = /dn=(.+?)&/
+    size_regex = /xl=(.+?)&/
+    try
+      name = name_regex.exec(link)[1]
+    catch error
+      name = null
+
+    continue if !name
+
+    try
+      size = size_regex.exec(link)[1]
+    catch error
+      size = 0
+
+    name = decodeURI(name)
+    continue if re[name]?
+    count++
+    re[name] = id: count, link: link, big: (size/(1024*1024))
+  $("#magnet_table").data("maxid", count)
+  re
+
+table_append_tr = (table, result)->
+  console.log "table:", table
+  console.log "result", result
+  table.append(wrap_tr(result))
 
 wrap_tr = (linkobj)->
   trtd = $("<tbody></tobdy>")
@@ -86,6 +132,7 @@ wrap_tr = (linkobj)->
   trtd
 
 dealBig = (num)->
+  return "no size data" if num == 0
   num = num.toFixed(3)
   numstr=""
   if num < 1
@@ -96,15 +143,16 @@ dealBig = (num)->
     numstr = "#{Math.floor(num)}MB"
   numstr
 
+#把有的放进selectedIDS ... 过去写的什么垃圾代码 
 check_selected = ()->
-  $("input[type='checkbox']").each(()->
+  current_table().find("input[type='checkbox']").each(()->
     if checked($(this))
       id = $(this).attr("id")
       id = id.substring(3, id.length)
       selectedIDS[id]=0
     for key,selected_id of selectedIDS
       temp = $("#cb_#{key}")
-      temp.attr("checked",true) if temp?
+      temp.prop("checked",true) if temp?
   )
 
 dealChecked = (td) ->
@@ -121,6 +169,7 @@ scanColor = ()->
   )
 
 confirmScope = ()->
+  maxid = parseInt( current_table().data("maxid") )
   from = Math.floor($("#from").val())
   to = Math.floor($("#to").val())
   reg = /\d+/
@@ -139,31 +188,36 @@ confirmScope = ()->
 cleanScope = ()->
   $("#from").val("")
   $("#to").val("")
+  cleanSelect()
 
 selectAll = ()->
-  $("input[type='checkbox']").each(->
-    $(this).attr('checked',true)
+  table = current_table()
+  table.find("input[type='checkbox']").each(->
+    $(this).prop('checked',true)
   )
   scanColor()
 
 selectOpposite = ()->
-  $("input[type='checkbox']").each(->
+  table = current_table()
+  table.find("input[type='checkbox']").each(->
     toggle_check($(this))
   )
   scanColor()
 
-cleanSearch = ()->
+cleanSearch = (result = {} )->
+  table = current_table()
+  type = table.data("type")
   check_selected()
   $("#searchText").val("")
   table.find("tbody").remove()
-  table.append(trs)
-  check_selected()
+  table_append_tr(table, window["#{type}_bitch"])
   scanColor()
 
 cleanSelect = ()->
+  table = current_table()
   $("input[type='checkbox']").each(->
-    if($(this).attr('checked') == "checked")
-      $(this).attr("checked", false)
+    if $(this).prop('checked')
+      $(this).prop("checked", false)
   )
   scanColor()
   selectedIDS= {}
@@ -171,8 +225,9 @@ cleanSelect = ()->
 confirmCopy = ()->
   cpresult = ""
   count = 0
-  $("input[type='checkbox']").each(->
-    if($(this).attr("checked")=="checked")
+  table = current_table()
+  table.find("input[type='checkbox']").each(->
+    if $(this).prop("checked")
       cpresult += "#{$(this).attr("ed2k")}\n"
       count++
   )
@@ -188,11 +243,15 @@ confirmCopy = ()->
   return true
 
 checked = (element)->
-  element.attr("checked")=="checked"
+  element.prop("checked")
 
 toggle_check = (checkbox)->
   if checked(checkbox)
-    checkbox.attr("checked", false)
+    checkbox.prop("checked", false)
   else
-    checkbox.attr("checked", true)
+    checkbox.prop("checked", true)
+
+current_table = ()->
+  $("#" + $("#switch_ul>li.active a").data("type") + "_table")
+
 

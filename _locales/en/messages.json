@@ -4,7 +4,7 @@
     "description":"Extension Name"
   },
   "extension_description":{
-    "message":"An extension that helps you to deal with ed2k/eMule/eDonkey/magnet links in bulk, with functions of select range and filename search.",
+    "message":"It helps you to deal with ed2k/magnet links, with functions of select range and filename search.",
     "description":"Extension Description"
   },
   "error_scope":{

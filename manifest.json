@@ -32,7 +32,7 @@
     "homepage_url":"https://github.com/reducm/Ed2kChromePlugin",
     "content_scripts":[
 	{
-	    "matches" : [ "http://*/*", "https://*/*" ],
+	    "matches" : [ "http://*/*", "https://*/*", "file://*/*" ],
 	    "js" : ["contentscript.js"],
 	    "run_at" : "document_end",
 	    "all_frames" : false

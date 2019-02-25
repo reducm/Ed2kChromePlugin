@@ -123,13 +123,13 @@
     re = {};
     count = 0;
     for (_i = 0, _len = linkarr.length; _i < _len; _i++) {
-      link = linkarr[_i];
+      link = linkarr[_i].link;
       name_regex = /dn=(.+?)&/;
       size_regex = /xl=(.+?)&/;
       try {
         name = name_regex.exec(link)[1];
       } catch (error) {
-        name = null;
+        name = linkarr[_i].name;
       }
       if (!name) {
         continue;

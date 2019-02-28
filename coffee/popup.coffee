@@ -14,10 +14,10 @@ $(document).ready(()->
   window.magnet_bitch = @magnet_result = dealMagnet(result.magnet_result)
   console.log @ed2k_result, @magnet_result
   that = @
-    
+
   for prefix in types
     table_append_tr($("##{prefix}_table"), @["#{prefix}_result"])
-  
+
   $("span[i18n]").each(()->
     $(this).html(chrome.i18n.getMessage($(this).attr('i18n')))
   )
@@ -55,7 +55,7 @@ $(document).ready(()->
     table.append(temptrtd)
     check_selected()
   ).attr("placeholder",chrome.i18n.getMessage("search_placeholder"))
-  
+
   $("table").delegate("td[ee]","click",()->
     dealChecked($(this))
     scanColor()
@@ -93,18 +93,22 @@ dealEd2k = (linkarr = [])->
 dealMagnet = (linkarr = [])->
   re = {}
   count = 0
-  for link in linkarr
-    name_regex = /dn=(.+?)&/
-    size_regex = /xl=(.+?)&/
-    try
-      name = name_regex.exec(link)[1]
-    catch error
-      name = null
+  for l in linkarr
+    if (l.name)
+      name = l.name
+      link = l.link
+    else
+      name_regex = /dn=(.+?)&/
+      try
+        name = name_regex.exec(l)[1]
+      catch error
+        name = l # 解析失败也显示磁力链，不然没法复制
 
     continue if !name
 
+    size_regex = /xl=(.+?)&/
     try
-      size = size_regex.exec(link)[1]
+      size = size_regex.exec(l)[1]
     catch error
       size = 0
 
@@ -143,7 +147,7 @@ dealBig = (num)->
     numstr = "#{Math.floor(num)}MB"
   numstr
 
-#把有的放进selectedIDS ... 过去写的什么垃圾代码 
+#把有的放进selectedIDS ... 过去写的什么垃圾代码
 check_selected = ()->
   current_table().find("input[type='checkbox']").each(()->
     if checked($(this))

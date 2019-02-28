@@ -10,7 +10,10 @@ function onRequest(request, sender, sendResponse) {
 chrome.extension.onRequest.addListener(onRequest);
 chrome.tabs.onSelectionChanged.addListener(function(id,obj){
   chrome.tabs.sendRequest(id,{ask:"getResult"},function(response){
-    result = response.result;
+    if (!chrome.runtime.lastError) {
+      console.log(response.result);
+      result = response.result;
+    }
   });
 });
 

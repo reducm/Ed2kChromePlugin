@@ -8,7 +8,7 @@ var magnet_result = [];
 function gen_magnet_result() {
   // 原逻辑：磁力链有 dn 时，直接返回磁力链，popup.js 去解析文件名
   var m_result =  document.body.innerHTML.match(magnet_regex) || [];
-  if (m_result && m_result[0].match(magnet_name_regex)) {
+  if (m_result && m_result[0] && m_result[0].match(magnet_name_regex)) {
     return m_result;
   }
   // 磁力链没 dn 时，用磁力链所在超链接 text 作为文件名

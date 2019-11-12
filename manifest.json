@@ -1,41 +1,39 @@
 {
-    "name":"__MSG_extension_name__",
-    "version":"3.1",
-    "manifest_version": 2,
-    "default_locale": "en",
-    "icons":{
-	"19":"icon19.png",
-	"16":"icon16.png",
-	"48":"icon48.png",		
-	"128":"icon128.png"		
-    },
-    "background": {
-	"scripts":["background.js"]
-    },	
-    "description":"__MSG_extension_description__",
+	"name": "__MSG_extension_name__",
+	"version": "3.2",
+	"manifest_version": 2,
+	"default_locale": "en",
+	"icons": {
+		"19": "icon19.png",
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
+	},
+	"background": {
+		"scripts": ["background.js"]
+	},
+	"description": "__MSG_extension_description__",
 
-    "permissions": [ 
-	"http://*/*",
-	"https://*/*",
-	"tabs",    
-	"unlimitedStorage",
-	"clipboardRead",
-	"clipboardWrite",
-	"notifications"
+	"permissions": [
+		"http://*/*",
+		"https://*/*",
+		"tabs",
+		"unlimitedStorage",
+		"clipboardRead",
+		"clipboardWrite",
+		"notifications"
 	],
 
-    "page_action":{
-	"default_icon": "icon19.png",
-	"default_title": "__MSG_extension_name__",
-	"default_popup": "popup.html"
-    },
-    "homepage_url":"https://github.com/reducm/Ed2kChromePlugin",
-    "content_scripts":[
-	{
-	    "matches" : [ "http://*/*", "https://*/*" ],
-	    "js" : ["jquery-3.3.1.min.js", "contentscript.js"],
-	    "run_at" : "document_end",
-	    "all_frames" : false
-	}
-    ]
+	"page_action": {
+		"default_icon": "icon19.png",
+		"default_title": "__MSG_extension_name__",
+		"default_popup": "popup.html"
+	},
+	"homepage_url": "https://github.com/reducm/Ed2kChromePlugin",
+	"content_scripts": [{
+		"matches": ["http://*/*", "https://*/*"],
+		"js": ["jquery-3.3.1.min.js", "contentscript.js"],
+		"run_at": "document_end",
+		"all_frames": false
+	}]
 }

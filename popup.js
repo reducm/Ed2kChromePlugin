@@ -123,6 +123,7 @@
         name = l.name;
         link = l.link;
       } else {
+        link = l; // 傻叉了，只顾 name 忘了最重要的 link
         name_regex = /dn=(.+?)&/;
         try {
           name = name_regex.exec(l)[1];

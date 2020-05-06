@@ -36,12 +36,12 @@ $(document).ready(()->
     "confirmCopy":confirmCopy
   }
 
-  $("input[data-map]").live("click",()->
+  $("input[data-map]").on("click",()->
     data_map[$(this).attr("data-map")]()
     return
   )
 
-  $("#searchText").live("keyup", ()->
+  $("#searchText").on("keyup", ()->
     table = current_table()
     type = table.data("type")
     result = that["#{type}_result"]

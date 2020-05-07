@@ -257,6 +257,6 @@ toggle_check = (checkbox)->
     checkbox.prop("checked", true)
 
 current_table = ()->
-  $("#" + $("#switch_ul>li.active a").data("type") + "_table")
+  $("#" + $("#switch_ul > li > a.active").data("type") + "_table")
 
 

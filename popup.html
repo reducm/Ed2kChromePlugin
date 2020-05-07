@@ -22,10 +22,11 @@
     #switch_ul{ margin-bottom:10px; }
     textarea {width:100%; min-height:100px;}
 
-    td input[type='checkbox'] {
-      /* 太小好难点，弄大点 */
-      -webkit-transform: scale(2); /* Safari and Chrome */
-    }
+    <!--其实点行就可以选了，当然大点也好。不过这个版本稳定下来。下个版本再加吧-->
+    <!--td input[type='checkbox'] {-->
+      <!--/* 太小好难点，弄大点 */-->
+      <!---webkit-transform: scale(2); /* Safari and Chrome */-->
+    <!--}-->
   </style>    
 </head>
 <body>
@@ -45,9 +46,9 @@
 
     <div id="dt">
       <ul class="nav nav-tabs" id="switch_ul">
-        <li class="active"><a href="#ed2k_links" data-toggle="tab" data-type="ed2k"><span i18n="result_ed2k_links">ed2k结果</span></a></li>
-        <li><a href="#magnet_links" data-toggle="tab" data-type="magnet"><span i18n="result_magnet_links">magnet结果</span></a></li>
-        <li><a href="#copy" data-toggle="tab"><span i18n="result_copy">复制结果</span></a></li>
+        <li class="nav-item"><a class="nav-link active" href="#ed2k_links" data-toggle="tab" data-type="ed2k"><span i18n="result_ed2k_links">ed2k结果</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="#magnet_links" data-toggle="tab" data-type="magnet"><span i18n="result_magnet_links">magnet结果</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="#copy" data-toggle="tab"><span i18n="result_copy">复制结果</span></a></li>
       </ul>
 
       <div class="tab-content">

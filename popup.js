@@ -342,7 +342,7 @@
   };
 
   current_table = function() {
-    return $("#" + $("#switch_ul>li.active a").data("type") + "_table");
+    return $("#" + $("#switch_ul > li > a.active").data("type") + "_table");
   };
 
 }).call(this);

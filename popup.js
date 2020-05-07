@@ -44,10 +44,10 @@
       "cleanSelect": cleanSelect,
       "confirmCopy": confirmCopy
     };
-    $("input[data-map]").live("click", function() {
+    $("input[data-map]").on("click", function() {
       data_map[$(this).attr("data-map")]();
     });
-    $("#searchText").live("keyup", function() {
+    $("#searchText").on("keyup", function() {
       var key, r, st, table, templinkobj, temptrtd, type;
       table = current_table();
       type = table.data("type");

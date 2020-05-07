@@ -3,7 +3,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>Hi there</title>
   <link rel="stylesheet" href="bootstrap.min.css" type="text/css"  charset="utf-8">
-  <script type="text/javascript" src="jquery.js" charset="utf-8"></script>
+  <script type="text/javascript" src="jquery-3.3.1.min.js" charset="utf-8"></script>
   <script type="text/javascript" src="jclipboard.js" charset="utf-8"></script>
   <script type="text/javascript" src="bootstrap.min.js" charset="utf-8"></script>
   <script type="text/javascript" src="popup.js" charset="utf-8"></script>
@@ -21,6 +21,11 @@
     .selected_tr{background:#e3eaf2;}
     #switch_ul{ margin-bottom:10px; }
     textarea {width:100%; min-height:100px;}
+
+    td input[type='checkbox'] {
+      /* 太小好难点，弄大点 */
+      -webkit-transform: scale(2); /* Safari and Chrome */
+    }
   </style>    
 </head>
 <body>

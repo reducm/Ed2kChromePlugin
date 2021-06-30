@@ -127,6 +127,9 @@
         name_regex = /dn=(.+?)&/;
         try {
           name = name_regex.exec(l)[1];
+          if (re[name]) { // dn 重复了，会导致结果被同名链接覆盖
+            name = `${name}${count + 1}`
+          }
         } catch (error1) {
           error = error1;
           name = l; // 解析失败也显示磁力链，不然没法复制

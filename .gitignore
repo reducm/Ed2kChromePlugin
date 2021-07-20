@@ -7,3 +7,8 @@
 *.vim
 *.jas
 *.bak
+
+node_modules/
+
+*.tmp
+

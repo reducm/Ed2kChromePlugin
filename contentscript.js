@@ -10,7 +10,14 @@ function gen_magnet_result() {
   var m_result =  document.body.innerHTML.match(magnet_regex)
   m_result = m_result ? m_result.filter( onlyUnique ) : []
   if (m_result && m_result[0] && m_result[0].match(magnet_name_regex)) {
-    return m_result;
+    var xt_and_magnent = {};
+    for (var i = 0; i < m_result.length; i++) {
+      // 相同 xt 视为同一个文件
+      var magnet = m_result[i]
+      var xt = magnet.split('&')[0]
+      xt_and_magnent[xt] = magnet
+    }
+    return Object.values(xt_and_magnent);
   }
   // 磁力链没 dn 时，用磁力链所在超链接 text 作为文件名
   m_result = [];

@@ -9,6 +9,7 @@
 *.bak
 
 node_modules/
+dist/
 
 *.tmp
 

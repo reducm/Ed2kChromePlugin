@@ -12,20 +12,28 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    resolve: {
-      alias: {
-        "@": resolve(__dirname, "src")
-      }
-    },
+    // resolve: {
+    //   alias: {
+    //     "@": resolve(__dirname, "src")
+    //   }
+    // },
     server: {
       host: "127.0.0.1",
       port: 8080,
     },
-    plugins: [vue(), chromeExtension()],
+    // plugins: [vue(), chromeExtension()],
+    plugins: [vue()], // dev
     build: {
       rollupOptions: {
-        input: "src/manifest.json"
+        // input: "src/manifest.json"
+        // input: {
+        //   index: "src/popup.html", //dev
+        // }
       },
+      cssCodeSplit: false,
+      chunkSizeWarningLimit: 5000,
+      // 暂时不扰乱调试
+      minify: false,
     }
   }
 })

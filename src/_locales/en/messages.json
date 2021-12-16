@@ -1,83 +1,88 @@
 {
-  "extension_name":{
-    "message":"Ed2k&MagnetHelper",
-    "description":"Extension Name"
+  "extension_name": {
+    "message": "Ed2k&MagnetHelper",
+    "description": "Extension Name"
   },
-  "extension_description":{
-    "message":"It helps you to deal with ed2k/magnet links, with functions of select range and filename search.",
-    "description":"Extension Description"
+  "extension_description": {
+    "message": "It helps you to deal with ed2k/magnet links, with functions of select range and filename search.",
+    "description": "Extension Description"
   },
-  "error_scope":{
-    "message":"Select range error. Please enter a correct number."
+  "error_scope": {
+    "message": "Select range error. Please enter a correct number."
   },
-  "error_overlimit":{
-    "message":"Value exceeds valid range. Please enter a correct number."
+  "error_overlimit": {
+    "message": "Value exceeds valid range. Please enter a correct number."
   },
-  "error_unselected":{
-    "message":"You haven't selected!"
+  "error_unselected": {
+    "message": "You haven't selected!"
   },
-  "select_scope":{
-    "message":"Range"
+  "select_scope": {
+    "message": "Range"
   },
-  "confirm_scope":{
-    "message":"Confirm"
+  "confirm_scope": {
+    "message": "Confirm"
   },
-  "clean_scope":{
-    "message":"Clear"
+  "clean_scope": {
+    "message": "Clear"
   },
-  "scope_tips":{
-    "message":"(Items will be selected after you confirm.)"
+  "scope_tips": {
+    "message": "(Items will be selected after you confirm.)"
   },
-  "search_filename":{
-    "message":"Search"
+  "search_filename": {
+    "message": "Search"
   },
-  "search_placeholder":{
-    "message":"Filename"
+  "search_placeholder": {
+    "message": "Filename"
   },
-  "button_return":{
-    "message":"Return"
+  "button_return": {
+    "message": "Return"
   },
-  "search_tips":{
-    "message":"(Selected items won't be cleared after return.)"
+  "search_tips": {
+    "message": "(Selected items won't be cleared after return.)"
   },
-  "th_select":{
-    "message":"Select"
+  "th_select": {
+    "message": "Select"
   },
-  "th_number":{
-    "message":"#"
+  "th_number": {
+    "message": "#"
   },
-  "th_filename":{
-    "message":"Filename"
+  "th_filename": {
+    "message": "Filename"
   },
-  "th_size":{
-    "message":"Size"
+  "th_size": {
+    "message": "Size"
   },
-  "button_selectall":{
-    "message":"Select All"
+  "button_selectall": {
+    "message": "Select All"
   },
-  "button_selectopposite":{
-    "message":"Inverse"
+  "button_selectopposite": {
+    "message": "Inverse"
   },
-  "button_cleanselect":{
-    "message":"Deselect All"
+  "button_cleanselect": {
+    "message": "Deselect All"
   },
-  "button_confirmcopy":{
-    "message":"Copy"
+  "button_confirmcopy": {
+    "message": "Copy"
   },
-  "result_ed2k_links":{
-    "message":"ed2k~"
+  "result_ed2k_links": {
+    "message": "ed2k~"
   },
-  "result_magnet_links":{
-    "message":"magnet~"
+  "result_magnet_links": {
+    "message": "magnet~"
   },
-  "result_links":{
-    "message":"Links"
+  "result_links": {
+    "message": "Links"
   },
-  "result_copy":{
-    "message":"Copy"
+  "result_copy": {
+    "message": "Copy"
   },
-  "copy_success":{
-    "message":"The content has been successfully copied to the clipboard! The following is a copy results"
+  "copy_success": {
+    "message": "The content has been successfully copied to the clipboard! The following is a copy results"
+  },
+  "no_data": {
+    "message": "Data Not Found, Refresh"
+  },
+  "refresh": {
+    "message": "refresh"
   }
 }
-

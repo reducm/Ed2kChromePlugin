@@ -67,7 +67,7 @@ class Ed2kLink implements Link {
         // 每次需要重制一下
         let tempRegExp = new RegExp(ed2k_regex);
         let [tempLink, countName, big] = tempRegExp.exec(link) || []
-        console.log("ed2kTestRegex: ", {tempLink, countName, big, link})
+        // console.log("ed2kTestRegex: ", {tempLink, countName, big, link})
         let fileSizeInt: number = big ? (parseInt(big) / (1024 * 1024)) : 0
         this.fileSize = this.dealBig( fileSizeInt )
 

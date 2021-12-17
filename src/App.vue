@@ -7,48 +7,72 @@
         <div v-if="hasData">
           <el-row>
             <el-col :span="16">
-              from:<el-input-number
-                v-model="fromNum"
-                :controls="false"
-                size="mini"
-              ></el-input-number>
-              to:<el-input-number
-                v-model="toNum"
-                :controls="false"
-                size="mini"
-              ></el-input-number>
-              <el-button type="primary" @click="selectFromTo" size="mini"
-                >select</el-button
-              >
-              <el-button type="primary" @click="cleanSelectFromTo" size="mini"
-                >clean</el-button
-              >
+              <el-form :inline="true">
+                <el-form-item :label="t('select_scope')">
+                  <el-input-number v-model="fromNum" :controls="false" size="mini"></el-input-number>-
+                  <el-input-number v-model="toNum" :controls="false" size="mini"></el-input-number>
+                </el-form-item>
+
+                <el-form-item>
+                  <el-button type="primary" @click="selectFromTo" size="mini">
+                    {{
+                      t("confirm_scope")
+                    }}
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="6">
+              <el-from :inline="true">
+                <el-form-item :label="t('search_filename')">
+                  <el-input
+                    v-model="searchText"
+                    size="mini"
+                    placeholder="filename"
+                    @keyup="searchFilename"
+                    clearable
+                  />
+                </el-form-item>
+              </el-from>
             </el-col>
 
-            <el-col :span="8">
+            <el-col :span="12">
+              <el-button type="primary" @click="selectAll" size="mini">{{ t("button_selectall") }}</el-button>
+
               <el-button
-                type="danger"
-                @click="copy"
+                type="primary"
+                @click="selectOpposite"
+                size="mini"
+              >{{ t("button_selectopposite") }}</el-button>
+
+              <el-button
                 v-if="selectedData.length > 0"
-                >copy</el-button
-              >
+                type="success"
+                size="mini"
+                @click="copy"
+              >copy</el-button>
+
+              <el-button
+                v-if="selectedData.length > 0"
+                type="danger"
+                @click="clean"
+                size="mini"
+              >{{ t("clean_scope") }}</el-button>
             </el-col>
           </el-row>
 
           <el-tabs v-model="activeName" @tab-click="handleTabChange">
-            <el-tab-pane
-              v-for="type in TYPES"
-              v-bind:key="type"
-              :label="type"
-              :name="type"
-            >
+            <el-tab-pane v-for="type in TYPES" v-bind:key="type" :label="type" :name="type">
               <el-table
-                ref="multipleTable"
+                :ref="`${type}TableRef`"
                 :data="tableData(type)"
                 striple
                 fit
                 style="width: 100%"
-                max-height="500"
+                max-height="800"
                 @selection-change="handleTableSelectChange"
               >
                 <el-table-column type="selection" width="55" />
@@ -59,8 +83,7 @@
                       type="primary"
                       :href="scope.row.link"
                       :underline="false"
-                      >{{ scope.row.fileName }}</el-link
-                    >
+                    >{{ scope.row.fileName }}</el-link>
                   </template>
                 </el-table-column>
                 <el-table-column property="fileSize" label="size" />
@@ -71,21 +94,16 @@
 
         <div v-else>
           <el-row>
-            <el-col :span="8"
-              ><div class="grid-content bg-purple"></div
-            ></el-col>
+            <el-col :span="8">
+              <div class="grid-content bg-purple"></div>
+            </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
                 <span i18n="no_data">刷新读取数据</span>
-                <el-button
-                  type="primary"
-                  :icon="RefreshLeft"
-                  @click="fetchDocument"
-                  circle
-                ></el-button>
+                <el-button type="primary" :icon="RefreshLeft" @click="fetchDocument" circle></el-button>
               </div>
             </el-col>
-            <el-col :span="8"> </el-col>
+            <el-col :span="8"></el-col>
           </el-row>
         </div>
       </el-main>
@@ -107,11 +125,12 @@ import {
   magnet_name_regex,
   magnet_regex,
   Ed2kLink,
-  TestString
+  TestString,
 } from "./types";
 import { defineComponent } from "vue";
 import cheerio from "cheerio";
 import _ from "lodash";
+import localalsJSON from "./_locales/zh_CN/messages.json";
 
 const TYPES: string[] = ["ed2k", "magnet"];
 
@@ -122,11 +141,14 @@ export default defineComponent({
       documentBody: "",
       magnetLinks: [] as MagnetLink[],
       ed2kLinks: [] as Ed2kLink[],
+      base_magnetLinks: [] as MagnetLink[],
+      base_ed2kLinks: [] as Ed2kLink[],
       activeName: TYPES[0],
       currentLinks: [] as any[],
       selectedData: [] as any[],
       fromNum: 0,
       toNum: 0,
+      searchText: "" as string
     };
   },
   computed: {
@@ -134,46 +156,106 @@ export default defineComponent({
       return this.magnetLinks.length > 0 || this.ed2kLinks.length > 0;
     },
   },
-  created() {},
+  watch: {
+  },
+  created() {
+    this.sendToContentScript({ dispatch: "dev" });
+  },
   methods: {
     handleTabChange(tab: any) {
-      // ed2k
-      if (tab.name == TYPES[0]) {
-      } else {
-      }
+      this.clean()
     },
-    handleTableSelectChange(val: any ) {
-      this.selectedData = val
+    handleTableSelectChange(val: any) {
+      this.selectedData = val;
+    },
+    searchFilename() {
+      let text: string = this.searchText
+      console.log({searchText: text})
+      if (text.length < 1) {
+        this.resetAllTable()
+        return
+      }
+      let data = this.getCurrentTableData();
+      let newData = _.filter(data, (d)=> d.fileName.indexOf(text) > 0)
+      this.setCurrentTableData(newData)
+
+    },
+    getCurrentTableData(): any[] {
+      const key = this.getCurrentTableDataKey();
+      return (<any>this)[key]
+    },
+    setCurrentTableData(data: any[]) {
+      const key = this.getCurrentTableDataKey();
+      (<any>this)[key] = data
+    },
+    getCurrentTableDataKey(): string {
+      return `${this.activeName}Links`
+    },
+    resetAllTable() {
+      Object.assign(this.ed2kLinks, this.base_ed2kLinks)
+      Object.assign(this.magnetLinks, this.base_magnetLinks)
     },
     selectFromTo() {
       const from = this.fromNum;
       const to = this.toNum;
 
-      if(from >= to) {
-        alert("from must less than to selection")
-        return 
+      if (from >= to) {
+        alert("from must less than to selection");
+        return;
       }
-      const tableData: any[] = this.tableData(this.activeName)
-      let datanum = tableData.length
+      const tableData: any[] = this.getCurrentTableData()
+      let datanum = tableData.length;
 
-      if(to > datanum) {
-        alert("to selection cannot bigger than list total length")
+      if (to > datanum) {
+        alert("to selection cannot bigger than list total length");
       }
 
-      this.selectedData = []
+      const that = this;
+      const tableKey = `${that.activeName}TableRef`;
+      (<any>this).$refs[tableKey][0].clearSelection();
 
-      for(let i=from; i <= to; i++) {
-        let d = tableData[i]
-        console.log({data: d})
-        let a = ( <any>this ).$refs.multipleTable.toggleRowSelection(d)
+      // this.selectedData = [];
+
+      console.log({ tableData, refs: that.$refs });
+      for (let i = from; i <= to; i++) {
+        let d = tableData[i];
+        // console.log({ data: d });
+        (<any>that).$refs[tableKey][0].toggleRowSelection(d);
+        // this.selectedData.push(d)
       }
     },
-    cleanSelectFromTo(){
+    clean() {
       this.fromNum = 0;
       this.toNum = 0;
+      this.resetAllTable()
+      this.searchText = ""
+      this.selectedData = []
+
+      for(let type of TYPES) {
+        let tableKey = `${type}TableRef`;
+        (<any>this).$refs[tableKey][0].clearSelection();
+      }
+
     },
-    copy(){
-      alert(JSON.stringify(this.selectedData))
+    selectAll() {
+      const that = this
+      const tableKey: string = `${that.activeName}TableRef`;
+      this.clearRefTableSelection(tableKey)
+      this.toggleAllRefTableSelection(tableKey)
+    },
+    clearRefTableSelection(tableKey: any) {
+      (<any>this).$refs[tableKey][0].clearSelection();
+    },
+    toggleAllRefTableSelection(tableKey: any) {
+      (<any>this).$refs[tableKey][0].toggleAllSelection();
+    },
+    selectOpposite() {
+      const that = this
+      const tableKey = `${that.activeName}TableRef`;
+      (<any>this).$refs[tableKey][0].toggleAllSelection();
+    },
+    copy() {
+      alert(JSON.stringify(this.selectedData));
     },
     tableData(type: string): any[] {
       const key = `${type}Links`;
@@ -194,14 +276,18 @@ export default defineComponent({
       this.documentBody = body.documentBody;
       this.magnetLinks = this.genMagnetLinks(this.documentBody);
       this.ed2kLinks = this.genEd2kLinks(this.documentBody);
+
+      Object.assign(this.base_ed2kLinks, this.ed2kLinks)
+      Object.assign(this.base_magnetLinks, this.magnetLinks)
     },
     genMagnetLinks(bodyString: string): Array<MagnetLink> {
       // 这个已经是magnet的链接
       let magnetLinksArray: string[] =
         bodyString.match(new RegExp(magnet_regex)) || [];
 
-      magnetLinksArray = _.map(magnetLinksArray, (a )=> a.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">"))
-      
+      magnetLinksArray = _.map(magnetLinksArray, (a) =>
+        a.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      );
 
       // 同时把 <a href='magnet:xxxx'>找出来，里面需要看看能否用text做标题
       let $ = cheerio.load(bodyString);
@@ -220,7 +306,7 @@ export default defineComponent({
             resp.push(new MagnetLink(link, sequence));
           }
         }
-        console.log({ 创建出来的magnet对象们: resp });
+        // console.log({ 创建出来的magnet对象们: resp });
 
         return resp;
       } else {
@@ -246,7 +332,7 @@ export default defineComponent({
             resp.push(new Ed2kLink(link, sequence));
           }
         }
-        console.log({ 创建出来的ed2k对象们: resp });
+        // console.log({ 创建出来的ed2k对象们: resp });
         return resp;
       } else {
         return [];
@@ -262,7 +348,17 @@ export default defineComponent({
       // const that = this;
       // await chrome.tabs.sendMessage(tab.id!, message, that.responseFunc);
       // 测试 先用testString
-      this.responseFunc({documentBody: TestString})
+      this.responseFunc({ documentBody: TestString });
+    },
+    t(messageName: string) {
+      let message: string = "";
+      try {
+        message = chrome.i18n.getMessage(messageName);
+      } catch (error) {
+        // console.log("翻译出错: ", { key: messageName, error });
+        message = (<any>localalsJSON)[messageName]["message"];
+      }
+      return message;
     },
   },
 });

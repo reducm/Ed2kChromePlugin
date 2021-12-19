@@ -50,8 +50,7 @@ export default defineConfig(({ command, mode }) => {
         },
         cssCodeSplit: false,
         chunkSizeWarningLimit: 5000,
-        // 暂时不扰乱调试
-        minify: false,
+        minify: true,
       }
     }
   }

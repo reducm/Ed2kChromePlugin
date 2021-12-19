@@ -1,0 +1,48 @@
+{
+    "name": "__MSG_extension_name__",
+    "version": "4.0",
+    "manifest_version": 3,
+    "default_locale": "en",
+    "description": "__MSG_extension_description__",
+    "action": {
+        "default_icon": {
+            "19": "assets/icon19.png",
+            "16": "assets/icon16.png",
+            "48": "assets/icon48.png",
+            "128": "assets/icon128.png"
+        },
+        "default_title": "__MSG_extension_name__",
+        "default_popup": "popup.html"
+    },
+    "icons": {
+        "19": "assets/icon19.png",
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
+    },
+    "background": {
+        "service_worker": "background.ts"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "tabs",
+        "unlimitedStorage",
+        "clipboardRead",
+        "clipboardWrite",
+        "notifications"
+    ],
+    "homepage_url": "https://github.com/reducm/Ed2kChromePlugin",
+    "host_permissions": ["https://*/*", "http://*/*"],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "contentscript.ts"
+            ],
+            "run_at": "document_end"
+        }
+    ]
+}

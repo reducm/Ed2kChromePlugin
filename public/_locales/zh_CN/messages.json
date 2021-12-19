@@ -74,7 +74,13 @@
     "message":"复制结果"
   },
   "copy_success":{
-    "message":"内容已经成功复制到粘贴板！以下是复制结果"
+    "message":"以下是筛选结果"
+  },
+  "no_data": {
+    "message": "刷新读取数据"
+  }, 
+  "refresh": {
+    "message": "刷新"
   }
 }
 

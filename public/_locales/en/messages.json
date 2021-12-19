@@ -78,6 +78,13 @@
   },
   "copy_success":{
     "message":"The content has been successfully copied to the clipboard! The following is a copy results"
+  },
+  "no_data": {
+    "message": "Refresh To Get Newest Data"
+  }, 
+  "refresh": {
+    "message": "refresh"
   }
+
 }
 

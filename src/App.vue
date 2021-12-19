@@ -34,12 +34,15 @@
                     placeholder="filename"
                     @keyup="searchFilename"
                     clearable
+                    @clear="searchClear"
                   />
                 </el-form-item>
               </el-from>
             </el-col>
 
             <el-col :span="12">
+              <el-button type="warning" @click="fetchDocument" size="mini">{{ t("refresh") }}</el-button>
+
               <el-button type="primary" @click="selectAll" size="mini">{{ t("button_selectall") }}</el-button>
 
               <el-button
@@ -72,7 +75,7 @@
                 striple
                 fit
                 style="width: 100%"
-                max-height="800"
+                max-height="600"
                 @selection-change="handleTableSelectChange"
               >
                 <el-table-column type="selection" width="55" />
@@ -99,14 +102,30 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                <span i18n="no_data">刷新读取数据</span>
-                <el-button type="primary" :icon="RefreshLeft" @click="fetchDocument" circle></el-button>
+                <span i18n="no_data">{{t('no_data')}}</span>
+                <el-button type="warning" :icon="RefreshLeft" @click="fetchDocument" circle></el-button>
               </div>
             </el-col>
             <el-col :span="8"></el-col>
           </el-row>
         </div>
       </el-main>
+
+      <el-dialog
+        v-model="copyDialogVisible"
+        :title="t('copy_success')"
+        width="90%"
+        :before-close="handleClose"
+      >
+        <el-input v-model="copyText" autosize type="textarea" :placeholder="t('result_copy')" />
+
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button type="success" @click="copyToClipboard">{{ t("button_confirmcopy") }}</el-button>
+            <el-button type="primary" @click="copyDialogVisible = false">{{ t("confirm_scope") }}</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -130,7 +149,7 @@ import {
 import { defineComponent } from "vue";
 import cheerio from "cheerio";
 import _ from "lodash";
-import localalsJSON from "./_locales/zh_CN/messages.json";
+import localalsJSON from "../public/_locales/en/messages.json";
 
 const TYPES: string[] = ["ed2k", "magnet"];
 
@@ -148,7 +167,9 @@ export default defineComponent({
       selectedData: [] as any[],
       fromNum: 0,
       toNum: 0,
-      searchText: "" as string
+      searchText: "" as string,
+      copyDialogVisible: false,
+      copyText: ""
     };
   },
   computed: {
@@ -165,20 +186,35 @@ export default defineComponent({
     handleTabChange(tab: any) {
       this.clean()
     },
+    searchClear() {
+      this.clean()
+    },
+    handleClose(done: Function) {
+      done()
+    },
     handleTableSelectChange(val: any) {
       this.selectedData = val;
     },
     searchFilename() {
       let text: string = this.searchText
-      console.log({searchText: text})
+      console.log({ searchText: text })
       if (text.length < 1) {
         this.resetAllTable()
         return
       }
       let data = this.getCurrentTableData();
-      let newData = _.filter(data, (d)=> d.fileName.indexOf(text) > 0)
+      let newData = _.filter(data, (d) => d.fileName.indexOf(text) > 0)
       this.setCurrentTableData(newData)
 
+    },
+    // 复制到粘贴板
+    async copyToClipboard() {
+      try {
+        await navigator.clipboard.writeText(this.copyText);
+        alert("copy success!")
+      } catch (err) {
+        alert(`Somthing Error: ${JSON.stringify(err)} `)
+      }
     },
     getCurrentTableData(): any[] {
       const key = this.getCurrentTableDataKey();
@@ -208,6 +244,7 @@ export default defineComponent({
 
       if (to > datanum) {
         alert("to selection cannot bigger than list total length");
+        return;
       }
 
       const that = this;
@@ -231,7 +268,7 @@ export default defineComponent({
       this.searchText = ""
       this.selectedData = []
 
-      for(let type of TYPES) {
+      for (let type of TYPES) {
         let tableKey = `${type}TableRef`;
         (<any>this).$refs[tableKey][0].clearSelection();
       }
@@ -255,7 +292,18 @@ export default defineComponent({
       (<any>this).$refs[tableKey][0].toggleAllSelection();
     },
     copy() {
-      alert(JSON.stringify(this.selectedData));
+      // alert(JSON.stringify(this.selectedData));
+      const { selectedData } = this;
+      if (selectedData.length < 1) {
+        alert("you should select at lease one item!")
+        return
+      } else {
+        const result = _.map(selectedData, (data) => data.link).join("\r\n")
+        this.copyText = result
+
+        this.copyDialogVisible = true;
+      }
+
     },
     tableData(type: string): any[] {
       const key = `${type}Links`;
@@ -344,18 +392,18 @@ export default defineComponent({
       return tab;
     },
     async sendToContentScript(message: DispatchMessageType) {
-      // let tab = await this.getCurrentTab();
-      // const that = this;
-      // await chrome.tabs.sendMessage(tab.id!, message, that.responseFunc);
-      // 测试 先用testString
-      this.responseFunc({ documentBody: TestString });
+      let tab = await this.getCurrentTab();
+      const that = this;
+      await chrome.tabs.sendMessage(tab.id!, message, that.responseFunc);
+      // // 测试 先用testString
+      // this.responseFunc({ documentBody: TestString });
     },
     t(messageName: string) {
       let message: string = "";
       try {
         message = chrome.i18n.getMessage(messageName);
       } catch (error) {
-        // console.log("翻译出错: ", { key: messageName, error });
+        console.log("翻译出错: ", { key: messageName, error });
         message = (<any>localalsJSON)[messageName]["message"];
       }
       return message;

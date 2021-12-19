@@ -1,6 +1,6 @@
 {
-  "name": "vite-vue-app",
-  "version": "0.0.0",
+  "name": "ed2kmagnetchromeplugin",
+  "version": "4.0.0",
   "author": "jas",
   "scripts": {
     "dev": "vite",

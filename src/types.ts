@@ -1,10 +1,12 @@
-import magnetTool from 'magnet-uri'
-
-
 // const ed2k_regex = /ed2k:\/\/\|file\|.+?\//gi;
 const ed2k_regex = /ed2k:\/\/\|file\|(.+?)\|(.+?)\|.+?\//ig
-const magnet_regex = /magnet\:\?[^\"]+/gi
+// const magnet_regex = /magnet\:\?[^\"]+/gi
 const magnet_name_regex = /dn=(.+?)&/
+const magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=.+?)?&/gi  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
+const magnet_xt_reg = /xt=urn:btih:(.+?)&/
+const magnet_xt_reg_with_no_end = /xt=urn:btih:(.+?)&?/
+const magnet_dn_reg = /dn=(.+?)[\"&]/
+
 
 interface DispatchMessageType {
     dispatch: string
@@ -25,6 +27,12 @@ interface Link {
     sequence?: number; //选择的序号
 }
 
+const getDnByMagLink: Function = function (magLink: string): string {
+    let match = magLink.match(new RegExp(magnet_dn_reg)) || []
+    return match[1] || ""
+}
+
+
 class MagnetLink implements Link {
     link: string
     fileName?: string
@@ -36,12 +44,12 @@ class MagnetLink implements Link {
         this.sequence = sequence + 1
 
 
-        let countName: string = "" 
+        let countName: string = ""
         try {
-            let magnetObj = magnetTool.decode(link);
+            let magnetObj = getDnByMagLink(link)
             countName = magnetObj.dn as string
         } catch (e) {
-           // do nothing 
+            // do nothing
         }
 
         if (name) { //有传入的Atext 就用A textName
@@ -69,7 +77,7 @@ class Ed2kLink implements Link {
         let [tempLink, countName, big] = tempRegExp.exec(link) || []
         // console.log("ed2kTestRegex: ", {tempLink, countName, big, link})
         let fileSizeInt: number = big ? (parseInt(big) / (1024 * 1024)) : 0
-        this.fileSize = this.dealBig( fileSizeInt )
+        this.fileSize = this.dealBig(fileSizeInt)
 
         if (name) { //有传入的Atext 就用A textName
             this.fileName = name
@@ -88,7 +96,7 @@ class Ed2kLink implements Link {
             return "nosize";
         }
 
-        num = parseInt( num.toFixed(3) );
+        num = parseInt(num.toFixed(3));
 
         numstr = "";
         if (num < 1) {
@@ -117,5 +125,8 @@ export {
     magnet_regex,
     magnet_name_regex,
     Ed2kLink,
-    TestString
+    TestString,
+    magnet_xt_reg,
+    magnet_dn_reg,
+    magnet_xt_reg_with_no_end
 }

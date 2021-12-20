@@ -1,5 +1,3 @@
-
-
 <template>
   <div class="container">
     <el-container>
@@ -9,7 +7,8 @@
             <el-col :span="16">
               <el-form :inline="true">
                 <el-form-item :label="t('select_scope')">
-                  <el-input-number v-model="fromNum" :controls="false" size="mini"></el-input-number>-
+                  <el-input-number v-model="fromNum" :controls="false" size="mini"></el-input-number>
+                  -
                   <el-input-number v-model="toNum" :controls="false" size="mini"></el-input-number>
                 </el-form-item>
 
@@ -29,12 +28,12 @@
               <el-from :inline="true">
                 <el-form-item :label="t('search_filename')">
                   <el-input
-                    v-model="searchText"
-                    size="mini"
-                    placeholder="filename"
-                    @keyup="searchFilename"
-                    clearable
-                    @clear="searchClear"
+                      v-model="searchText"
+                      size="mini"
+                      placeholder="filename"
+                      @keyup="searchFilename"
+                      clearable
+                      @clear="searchClear"
                   />
                 </el-form-item>
               </el-from>
@@ -46,50 +45,54 @@
               <el-button type="primary" @click="selectAll" size="mini">{{ t("button_selectall") }}</el-button>
 
               <el-button
-                type="primary"
-                @click="selectOpposite"
-                size="mini"
-              >{{ t("button_selectopposite") }}</el-button>
+                  type="primary"
+                  @click="selectOpposite"
+                  size="mini"
+              >{{ t("button_selectopposite") }}
+              </el-button>
 
               <el-button
-                v-if="selectedData.length > 0"
-                type="success"
-                size="mini"
-                @click="copy"
-              >copy</el-button>
+                  v-if="selectedData.length > 0"
+                  type="success"
+                  size="mini"
+                  @click="copy"
+              >copy
+              </el-button>
 
               <el-button
-                v-if="selectedData.length > 0"
-                type="danger"
-                @click="clean"
-                size="mini"
-              >{{ t("clean_scope") }}</el-button>
+                  v-if="selectedData.length > 0"
+                  type="danger"
+                  @click="clean"
+                  size="mini"
+              >{{ t("clean_scope") }}
+              </el-button>
             </el-col>
           </el-row>
 
           <el-tabs v-model="activeName" @tab-click="handleTabChange">
             <el-tab-pane v-for="type in TYPES" v-bind:key="type" :label="type" :name="type">
               <el-table
-                :ref="`${type}TableRef`"
-                :data="tableData(type)"
-                striple
-                fit
-                style="width: 100%"
-                max-height="600"
-                @selection-change="handleTableSelectChange"
+                  :ref="`${type}TableRef`"
+                  :data="tableData(type)"
+                  striple
+                  fit
+                  style="width: 100%"
+                  max-height="600"
+                  @selection-change="handleTableSelectChange"
               >
-                <el-table-column type="selection" width="55" />
-                <el-table-column prop="sequence" label="#" width="60" />
+                <el-table-column type="selection" width="55"/>
+                <el-table-column prop="sequence" label="#" width="60"/>
                 <el-table-column prop="fileName" label="file" width="500">
                   <template #default="scope">
                     <el-link
-                      type="primary"
-                      :href="scope.row.link"
-                      :underline="false"
-                    >{{ scope.row.fileName }}</el-link>
+                        type="primary"
+                        :href="scope.row.link"
+                        :underline="false"
+                    >{{ scope.row.fileName }}
+                    </el-link>
                   </template>
                 </el-table-column>
-                <el-table-column property="fileSize" label="size" />
+                <el-table-column property="fileSize" label="size"/>
               </el-table>
             </el-tab-pane>
           </el-tabs>
@@ -102,7 +105,7 @@
             </el-col>
             <el-col :span="8">
               <div class="grid-content bg-purple-light">
-                <span i18n="no_data">{{t('no_data')}}</span>
+                <span i18n="no_data">{{ t('no_data') }}</span>
                 <el-button type="warning" :icon="RefreshLeft" @click="fetchDocument" circle></el-button>
               </div>
             </el-col>
@@ -112,12 +115,12 @@
       </el-main>
 
       <el-dialog
-        v-model="copyDialogVisible"
-        :title="t('copy_success')"
-        width="90%"
-        :before-close="handleClose"
+          v-model="copyDialogVisible"
+          :title="t('copy_success')"
+          width="90%"
+          :before-close="handleClose"
       >
-        <el-input v-model="copyText" autosize type="textarea" :placeholder="t('result_copy')" />
+        <el-input v-model="copyText" autosize type="textarea" :placeholder="t('result_copy')"/>
 
         <template #footer>
           <span class="dialog-footer">
@@ -131,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import { RefreshLeft } from "@element-plus/icons-vue";
+import {RefreshLeft} from "@element-plus/icons-vue";
 </script>
 
 <script lang="ts">
@@ -145,9 +148,12 @@ import {
   magnet_regex,
   Ed2kLink,
   TestString,
+  magnet_xt_reg,
+  magnet_dn_reg,
+  magnet_xt_reg_with_no_end
 } from "./types";
-import { defineComponent } from "vue";
-import cheerio from "cheerio";
+import {defineComponent} from "vue";
+import cheerio, {Cheerio, CheerioAPI} from "cheerio";
 import _ from "lodash";
 import localalsJSON from "../public/_locales/en/messages.json";
 
@@ -177,10 +183,9 @@ export default defineComponent({
       return this.magnetLinks.length > 0 || this.ed2kLinks.length > 0;
     },
   },
-  watch: {
-  },
+  watch: {},
   created() {
-    this.sendToContentScript({ dispatch: "dev" });
+    this.sendToContentScript({dispatch: "dev"});
   },
   methods: {
     handleTabChange(tab: any) {
@@ -197,7 +202,7 @@ export default defineComponent({
     },
     searchFilename() {
       let text: string = this.searchText
-      console.log({ searchText: text })
+      // console.log({searchText: text})
       if (text.length < 1) {
         this.resetAllTable()
         return
@@ -253,7 +258,7 @@ export default defineComponent({
 
       // this.selectedData = [];
 
-      console.log({ tableData, refs: that.$refs });
+      // console.log({tableData, refs: that.$refs});
       for (let i = from; i <= to; i++) {
         let d = tableData[i];
         // console.log({ data: d });
@@ -293,7 +298,7 @@ export default defineComponent({
     },
     copy() {
       // alert(JSON.stringify(this.selectedData));
-      const { selectedData } = this;
+      const {selectedData} = this;
       if (selectedData.length < 1) {
         alert("you should select at lease one item!")
         return
@@ -329,41 +334,107 @@ export default defineComponent({
       Object.assign(this.base_magnetLinks, this.magnetLinks)
     },
     genMagnetLinks(bodyString: string): Array<MagnetLink> {
+      bodyString = bodyString.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+
       // 这个已经是magnet的链接
       let magnetLinksArray: string[] =
-        bodyString.match(new RegExp(magnet_regex)) || [];
+          bodyString.match(new RegExp(magnet_regex)) || [];
 
-      magnetLinksArray = _.map(magnetLinksArray, (a) =>
-        a.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-      );
-
+      // magnetLinksArray = _.map(magnetLinksArray, (a) =>
+      //   a.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      // );
       // 同时把 <a href='magnet:xxxx'>找出来，里面需要看看能否用text做标题
-      let $ = cheerio.load(bodyString);
 
       if (magnetLinksArray.length > 0) {
+        // console.log("uniq前array长度:", magnetLinksArray.length)
+
         magnetLinksArray = _.uniq(magnetLinksArray);
+        // 消除后面的&
+        magnetLinksArray = _.map(magnetLinksArray, (link) => {
+          if (link[link.length - 1] == "&") {
+            return link.substring(0, link.length - 1)
+          } else {
+            return link
+          }
+        })
+        const that = this
+
+        let $ = cheerio.load(bodyString);
+
+        // console.log("uniq后array长度:", magnetLinksArray.length)
+
         const resp: Array<MagnetLink> = [];
         for (let seq in magnetLinksArray) {
           let sequence = parseInt(seq);
           let link = magnetLinksArray[seq];
           // 尝试从as里找到有无这条link
-          let aQuery = $(`a[href='${link}']`);
-          if (aQuery.length > 0) {
-            resp.push(new MagnetLink(link, sequence, aQuery.text()));
+          let aName: string = that.getXtSameATagName($, link)
+          if (aName.length > 0) {
+            // console.log(`a标签找到${aName}`, {seq, link})
+            resp.push(new MagnetLink(link, sequence, aName));
           } else {
+            // console.log("找不到a标签", {seq, link})
             resp.push(new MagnetLink(link, sequence));
           }
         }
-        // console.log({ 创建出来的magnet对象们: resp });
-
+        // console.log({创建出来的magnet对象们: resp});
         return resp;
       } else {
         return [];
       }
     },
+
+    // 给到的link里获取xn再匹配a包含magnet并且link是相同xt的, 再获取里面的链接
+    getXtSameATagName($: CheerioAPI, magnetLink: string): string {
+      let resp = ""
+      const as = $(`a[href^='magnet']`)
+      const that = this
+      if (as.length > 0) {
+        for (let a of as) {
+          let aHref = $(a).attr("href")
+          // console.log({aHref, a})
+          aHref = aHref || ""
+          if (aHref.length < 1) continue
+          if (this.magLinkIsEquals(aHref, magnetLink)) {
+            resp = $(a).text()
+            break
+          }
+        }
+      }
+      return resp
+    },
+
+    magLinkIsEquals(link1: string, link2: string): boolean {
+      let resp = this.getXtByMagLink(link1) === this.getXtByMagLink(link2)
+      // console.log("判断link是否相等", link1, link2)
+      return resp
+    },
+
+    getDnByMagLink(magLink: string): string {
+      try {
+        let match = magLink.match(new RegExp(magnet_dn_reg)) || []
+        return match[1] || ""
+      } catch (e) {
+        console.log("magLink get dn error", {magLink, e})
+        return ""
+      }
+    },
+
+    getXtByMagLink(magLink: string): string {
+      try {
+        // 这里要适配没有 & 的情况
+        let match = magLink.match(new RegExp(magnet_xt_reg_with_no_end)) || []
+        // console.log("获取link,xt", {magLink, 截取出来的: match[1]})
+        return match[1] || ""
+      } catch (e) {
+        console.log("magnetUri decode error:", {magLink, e})
+        return ""
+      }
+    },
+
     genEd2kLinks(bodyString: string): Array<Ed2kLink> {
       let ed2kLinksArray: string[] =
-        bodyString.match(new RegExp(ed2k_regex)) || [];
+          bodyString.match(new RegExp(ed2k_regex)) || [];
 
       let $ = cheerio.load(bodyString);
 
@@ -373,7 +444,7 @@ export default defineComponent({
         for (let seq in ed2kLinksArray) {
           let sequence = parseInt(seq);
           let link = ed2kLinksArray[sequence];
-          let aQuery = $(`a[href='${link}']`);
+          let aQuery = $(`a[href="${link}"]`);
           if (aQuery.length > 0) {
             resp.push(new Ed2kLink(link, sequence, aQuery.text()));
           } else {
@@ -387,7 +458,7 @@ export default defineComponent({
       }
     },
     async getCurrentTab(): Promise<chrome.tabs.Tab> {
-      let queryOptions = { active: true, currentWindow: true };
+      let queryOptions = {active: true, currentWindow: true};
       let [tab] = await chrome.tabs.query(queryOptions);
       return tab;
     },
@@ -403,7 +474,7 @@ export default defineComponent({
       try {
         message = chrome.i18n.getMessage(messageName);
       } catch (error) {
-        console.log("翻译出错: ", { key: messageName, error });
+        console.log("翻译出错: ", {key: messageName, error});
         message = (<any>localalsJSON)[messageName]["message"];
       }
       return message;

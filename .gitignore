@@ -8,6 +8,10 @@
 *.jas
 *.bak
 
-.idea/
-dist/
 node_modules/
+dist/
+
+*.tmp
+
+
+.idea/

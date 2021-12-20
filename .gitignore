@@ -7,3 +7,7 @@
 *.vim
 *.jas
 *.bak
+
+.idea/
+dist/
+node_modules/

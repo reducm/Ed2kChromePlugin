@@ -296,7 +296,7 @@ export default defineComponent({
       const tableKey = `${that.activeName}TableRef`;
       (<any>this).$refs[tableKey][0].toggleAllSelection();
     },
-    copy() {
+    async copy() {
       // alert(JSON.stringify(this.selectedData));
       const {selectedData} = this;
       if (selectedData.length < 1) {
@@ -305,7 +305,8 @@ export default defineComponent({
       } else {
         const result = _.map(selectedData, (data) => data.link).join("\r\n")
         this.copyText = result
-
+        // 4.2更新为打开也复制一次
+        await this.copyToClipboard()
         this.copyDialogVisible = true;
       }
 
@@ -329,6 +330,11 @@ export default defineComponent({
       this.documentBody = body.documentBody;
       this.magnetLinks = this.genMagnetLinks(this.documentBody);
       this.ed2kLinks = this.genEd2kLinks(this.documentBody);
+
+      if(this.ed2kLinks.length == 0 && this.magnetLinks.length > 0) {
+        this.activeName = TYPES[1];
+      }
+
 
       Object.assign(this.base_ed2kLinks, this.ed2kLinks)
       Object.assign(this.base_magnetLinks, this.magnetLinks)

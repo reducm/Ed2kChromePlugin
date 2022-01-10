@@ -6,12 +6,12 @@ chrome.runtime.onMessage.addListener((request: DispatchMessageType, sender, send
         // do something
     }
 
-    console.log({ request })
+    // console.log({ request })
 
     const documentBody = document.body.innerHTML
     const response: DocumentContentType = {documentBody}
 
-    console.log({"contentjs的document": documentBody, response})
+    // console.log({"contentjs的document": documentBody, response})
 
     // 发送回传
     sendResponse(response);

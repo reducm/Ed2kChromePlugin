@@ -2,7 +2,7 @@
 const ed2k_regex = /ed2k:\/\/\|file\|(.+?)\|(.+?)\|.+?\//ig
 // const magnet_regex = /magnet\:\?[^\"]+/gi
 const magnet_name_regex = /dn=(.+?)&/
-const magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=.+?)?&/gi  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
+const magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=.+?)?&?/gi  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
 const magnet_xt_reg = /xt=urn:btih:(.+?)&/
 const magnet_xt_reg_with_no_end = /xt=urn:btih:(.+?)&?/
 const magnet_dn_reg = /dn=(.+?)[\"&]/

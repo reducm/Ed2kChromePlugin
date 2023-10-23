@@ -25,12 +25,9 @@
     },
     "permissions": [
         "activeTab",
-        "scripting",
         "tabs",
         "unlimitedStorage",
-        "clipboardRead",
-        "clipboardWrite",
-        "notifications"
+        "clipboardWrite"
     ],
     "homepage_url": "https://github.com/reducm/Ed2kChromePlugin",
     "host_permissions": ["https://*/*", "http://*/*"],

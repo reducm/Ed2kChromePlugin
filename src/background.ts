@@ -1,1 +1,1 @@
-chrome.runtime.onInstalled.addListener(() => console.log("fuck background startup"))
+chrome.runtime.onInstalled.addListener(() => console.log("background startup"))

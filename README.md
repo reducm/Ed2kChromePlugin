@@ -14,7 +14,6 @@ update to vue3 + element-plus + typescript + vite
 
 `npm run build` 入口是 `$PWD/src/manifest`, 里面vite会解析`src/popup.html`, build完后chrome开发环境直接导入 `dist`目录即可
 
-
 ## In Google Webstore
 
 [click this link](https://chrome.google.com/webstore/detail/kmeeplonmihpchdbfccgmjhcnpecbppk)

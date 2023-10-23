@@ -2,7 +2,10 @@
 const ed2k_regex = /ed2k:\/\/\|file\|(.+?)\|(.+?)\|.+?\//ig
 // const magnet_regex = /magnet\:\?[^\"]+/gi
 const magnet_name_regex = /dn=(.+?)&/
-const magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=.+?)?&?/gi  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
+// 先查找全局匹配项, 这里匹配不到括号内的内容, 但能把整个文档素有magnet_link拿出, dn修复成贪婪到 [&或者\s], 适配dn后没有其他值的问问题
+const magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=.+?[&\s])?/gi  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
+// 这里去掉g下表，可以获取dn里面的内容
+const each_magnet_regex = /magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{32,40}(&dn=(.+))?[&\s]/i  //tr不要，查看是否有dn, 用&结束的话，把最后的一个字符去掉
 const magnet_xt_reg = /xt=urn:btih:(.+?)&/
 const magnet_xt_reg_with_no_end = /xt=urn:btih:(.+?)&?/
 const magnet_dn_reg = /dn=(.+?)[\"&]/
@@ -123,6 +126,7 @@ export {
     MagnetLink,
     ed2k_regex,
     magnet_regex,
+    each_magnet_regex,
     magnet_name_regex,
     Ed2kLink,
     TestString,

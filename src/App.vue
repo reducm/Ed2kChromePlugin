@@ -146,6 +146,7 @@ import {
   ed2k_regex,
   magnet_name_regex,
   magnet_regex,
+  each_magnet_regex,
   Ed2kLink,
   TestString,
   magnet_xt_reg,
@@ -154,7 +155,7 @@ import {
 } from "./types";
 import {defineComponent} from "vue";
 import cheerio, {Cheerio, CheerioAPI} from "cheerio";
-import _ from "lodash";
+import _, { trim } from "lodash";
 import localalsJSON from "../public/_locales/en/messages.json";
 
 const TYPES: string[] = ["ed2k", "magnet"];
@@ -346,6 +347,8 @@ export default defineComponent({
       let magnetLinksArray: string[] =
           bodyString.match(new RegExp(magnet_regex)) || [];
 
+      console.log({magnetLinksArray})
+
       // magnetLinksArray = _.map(magnetLinksArray, (a) =>
       //   a.replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
       // );
@@ -357,6 +360,7 @@ export default defineComponent({
         magnetLinksArray = _.uniq(magnetLinksArray);
         // 消除后面的&
         magnetLinksArray = _.map(magnetLinksArray, (link) => {
+          link = trim(link).replace("\"", "").replace("'", "")
           if (link[link.length - 1] == "&") {
             return link.substring(0, link.length - 1)
           } else {
@@ -378,10 +382,24 @@ export default defineComponent({
           if (aName.length > 0) {
             // console.log(`a标签找到${aName}`, {seq, link})
             resp.push(new MagnetLink(link, sequence, aName));
+            continue
           } else {
             // console.log("找不到a标签", {seq, link})
-            resp.push(new MagnetLink(link, sequence));
+            // 可以尝试用dn_name
+            try {
+              const new_link = decodeURIComponent(link)
+              const match = new_link.match(new RegExp(each_magnet_regex)) || []
+              if(match && match[2]) {
+                const dn_name = match[2]
+                resp.push(new MagnetLink(link, sequence, dn_name));
+              }
+              continue
+            } catch (error) {
+              console.error("error get dn=", error)
+            }
           }
+
+          resp.push(new MagnetLink(link, sequence));
         }
         // console.log({创建出来的magnet对象们: resp});
         return resp;
